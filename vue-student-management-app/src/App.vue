@@ -9,15 +9,32 @@
             <router-link class="nav-link" to="/">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/create">Create Student</router-link>
+            <router-link class="nav-link" to="/create">Add Vehicle</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/view">View Students</router-link>
-          </li>
+<!--          <li class="nav-item">-->
+<!--            -->
+<!--          </li>-->
           <li class="nav-item">
             <router-link class="nav-link" to="/about">About</router-link>
           </li>
+          <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown link
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <router-link class="nav-link" to="/view">Car List</router-link>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
         </ul>
+
+        <nav class="navbar navbar-light bg-light">
+          <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </nav>
       </div>
     </nav>
 
@@ -30,6 +47,7 @@
 
 <style>
 @import "./assets/base.css";
+
 
 .logo {
   display: block;

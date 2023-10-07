@@ -41,7 +41,7 @@
           // this is using created hook 
           created() {
             //make call to backend GET students
-              let apiURL = 'http://localhost:3001/student';
+              let apiURL = 'https://student-management-api.azurewebsites.net/student';
               axios.get(apiURL).then(res => {
                   this.Students = res.data;
               }).catch(error => {
@@ -50,7 +50,7 @@
           },
           methods: {
               deleteStudent(id){
-                  let apiURL = `http://localhost:3001/student/${id}`;
+                  let apiURL = `hhttps://student-management-api.azurewebsites.net/student/${id}`;
                   let indexOfArrayItem = this.Students.findIndex(i => i._id === id);
   
                   if (window.confirm("Do you really want to delete?")) {
