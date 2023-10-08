@@ -50,7 +50,7 @@
           },
           methods: {
               deleteStudent(id){
-                  let apiURL = `hhttps://student-management-api.azurewebsites.net/student/${id}`;
+                  let apiURL = `https://student-management-api.azurewebsites.net/student/${id}`;
                   let indexOfArrayItem = this.Students.findIndex(i => i._id === id);
   
                   if (window.confirm("Do you really want to delete?")) {

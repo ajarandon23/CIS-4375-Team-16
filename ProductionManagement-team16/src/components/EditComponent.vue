@@ -41,7 +41,7 @@ export default {
         }
     },
     created() {
-        let apiURL = `http://localhost:3001/student/${this.$route.params.id}`;
+        let apiURL = `https://student-management-api.azurewebsites.net/student/${this.$route.params.id}`;
 
         axios.get(apiURL).then((res) => {
             this.student = res.data;
@@ -49,7 +49,7 @@ export default {
     },
     methods: {
         handleUpdateForm() {
-            let apiURL = `http://localhost:3001/student/${this.$route.params.id}`;
+            let apiURL = `https://student-management-api.azurewebsites.net/student${this.$route.params.id}`;
 
             axios.put(apiURL, this.student).then((res) => {
                 console.log(res)

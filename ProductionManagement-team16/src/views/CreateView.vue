@@ -49,7 +49,7 @@
         },
         methods: {
             handleSubmitForm() {
-                let apiURL = 'http://localhost:3001/student';
+                let apiURL = 'https://student-management-api.azurewebsites.net/student';
                 
                 axios.post(apiURL, this.student).then(() => {
                     //changing the view to the list
