@@ -1,32 +1,32 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h3 class="text-center">Create Student</h3>
+            <h3 class="text-center">Add Client</h3>
             <form @submit.prevent="handleSubmitForm">
                 <div class="form-group">
                     <label>First Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" v-model="student.firstName">
                 </div>
                 <div class="form-group">
                     <label>Last Name</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" v-model="student.lastName">
                 </div>
-
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" class="form-control">
+                    <input type="email" class="form-control" v-model="student.email">
                 </div>
-
                 <div class="form-group">
                     <label>Phone Number</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" v-model="student.phoneNumber">
                 </div>
-
+                
                 <div class="form-group">
-                    <label>Student ID</label>
-                    <input type="text" class="form-control" v-model="student.studentID">
+                    <input type="radio" id="insurance" value="insurance" v-model="student.paymentOption">
+                    <label for="insurance">Insurance</label>
+                    <input type="radio" id="self-pay" value="self-pay" v-model="student.paymentOption">
+                    <label for="self-pay">Self-Pay</label>
                 </div>
-                <button class="btn btn-danger mt-3">Create</button>
+                <router-link to="/some-path" class="btn btn-primary mt-3">continue</router-link>
             </form>
         </div>
     </div>
@@ -43,7 +43,8 @@
                    lastName: '',
                    email: '',
                    phoneNumber: '',
-                   studentID: ''
+                   studentID: '',
+                   insuranceOrSelfPay: false
                 }
             }
         },
@@ -59,7 +60,8 @@
                     lastName: '',
                     email: '',
                     phoneNumber: '',
-                    studentID: ''
+                    studentID: '',
+                    insuranceOrSelfPay: false
                   }
                 }).catch(error => {
                     console.log(error)
