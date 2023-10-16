@@ -23,8 +23,12 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <router-link class="nav-link" to="/view">All Cars</router-link>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <router-link class="nav-link" to="/view">Paint dept</router-link>
+          <router-link class="nav-link" to="/view">Body dept</router-link>
+          <router-link class="nav-link" to="/view">Parts dept</router-link>
+          <router-link class="nav-link" to="/view">Detail dept</router-link>
+          <router-link class="nav-link" to="/view">Delivery</router-link>
+          
         </div>
       </li>
         </ul>
