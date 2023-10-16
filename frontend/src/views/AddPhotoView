@@ -1,0 +1,40 @@
+<template>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <!-- Add a title for the new view -->
+      <h3 class="text-center">Add Photo</h3>
+      
+      <!-- Display the image in the center with a smaller size -->
+      <div class="text-center mt-3">
+        <button class="btn btn-primary rounded-circle">Front left</button>
+        <button class="btn btn-primary rounded-circle mx-2">Front</button>
+        <button class="btn btn-primary rounded-circle">Front right</button>
+      </div>
+      
+      <!-- Add upload image buttons around the image with circle shapes -->
+      <div class="d-flex justify-content-center mt-3">
+        <!-- Buttons on the left of the image -->
+        <button class="btn btn-primary rounded-circle mx-2">Left side</button>
+        
+        <!-- Image in the center -->
+        <img src="../assets/carimage.png" alt="Vehicle Image" class="img-fluid mx-2" style="width: 200px; height: 200px; border-radius: 50%;">
+        
+        <!-- Buttons on the right of the image -->
+        <button class="btn btn-primary rounded-circle mx-2">Right Side</button>
+      </div>
+      
+      <!-- Buttons from the back of the image with circle shapes -->
+      <div class="text-center mt-3">
+        <button class="btn btn-primary rounded-circle">Rear left</button>
+        <button class="btn btn-primary rounded-circle mx-2">Upload Back</button>
+        <button class="btn btn-primary rounded-circle">Upload Back</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  // Your component logic here
+}
+</script>

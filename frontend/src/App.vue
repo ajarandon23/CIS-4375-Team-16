@@ -3,19 +3,13 @@
     <!-- Nav bar -->
     <nav class="navbar navbar-expand navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand float-left" href="/">Student Managment App</a>
+        <a class="navbar-brand float-left" href="/">Productivty Management App</a>
         <ul class="nav navbar-nav mr-auto" >
           <li class="nav-item">
             <router-link class="nav-link" to="/">Home</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/create">Add Vehicle</router-link>
-          </li>
-<!--          <li class="nav-item">-->
-<!--            -->
-<!--          </li>-->
-          <li class="nav-item">
-            <router-link class="nav-link" to="/about">About</router-link>
           </li>
           <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
