@@ -26,7 +26,7 @@
                     <input type="radio" id="self-pay" value="self-pay" v-model="student.paymentOption">
                     <label for="self-pay">Self-Pay</label>
                 </div>
-                <router-link to="/some-path" class="btn btn-primary mt-3">continue</router-link>
+                <router-link to="/addvehicle" class="btn btn-primary mt-3">continue</router-link>
             </form>
         </div>
     </div>

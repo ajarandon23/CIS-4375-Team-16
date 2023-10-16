@@ -21,6 +21,8 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Car List
         </a>
+        <!-- added all drop down buttons need to have scripts for the filters
+           to work through the database -->
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <router-link class="nav-link" to="/view">All Cars</router-link>
           <router-link class="nav-link" to="/view">Paint dept</router-link>
