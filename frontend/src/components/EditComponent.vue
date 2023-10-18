@@ -6,22 +6,22 @@
         <form @submit.prevent="handleUpdateForm">
           <div class="form-group">
             <label>R/O</label>
-            <input type="number" class="form-control" v-model="record.ro">
+            <input type="number" readonly class="form-control" v-model="record.ro">
           </div>
   
           <div class="form-group">
             <label>Make</label>
-            <input type="text" class="form-control" v-model="record.make">
+            <input type="text" readonly  class=" form-control" v-model="record.make">
           </div>
   
           <div class="form-group">
             <label>Model</label>
-            <input type="text" class="form-control" v-model="record.model">
+            <input type="text" readonly class="form-control" v-model="record.model">
           </div>
   
           <div class="form-group">
             <label>Color</label>
-            <input type="text" class="form-control" v-model="record.color">
+            <input type="text" readonly class="form-control" v-model="record.color">
           </div>
   
           <div class="form-group">
@@ -43,14 +43,9 @@
   
           <div class="form-group">
             <label>Technician</label>
-            <input type="text" class="form-control" v-model="record.technician">
+            <input type="text" readonly class="form-control" v-model="record.technician">
           </div>
-  
-          <div class="form-group">
-            <label>Status</label>
-            <input type="text" class="form-control" v-model="record.status">
-          </div>
-  
+  <!--  we will need a work start and end date with a prompt for a note if the completion date is extended -->
           <!-- Added New Note Field -->
           <div class="form-group">
             <label>Add Note</label>
