@@ -1,63 +1,111 @@
 <template>
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <!-- Update Student content -->
-            <h3 class="text-center">Update Student</h3>
-            <form @submit.prevent="handleUpdateForm">
-                <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" class="form-control" v-model="student.firstName">
-                </div>
-
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <input type="text" class="form-control" v-model="student.lastName">
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" class="form-control" v-model="student.email">
-                </div>
-
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input type="text" class="form-control" v-model="student.phoneNumber">
-                </div>
-
-                <button class="btn btn-danger mt-3">Update</button>
-
-            </form>
-        </div>
+      <div class="col-md-6">
+        <!-- Update Vehicle content -->
+        <h3 class="text-center">Update Vehicle</h3>
+        <form @submit.prevent="handleUpdateForm">
+          <div class="form-group">
+            <label>R/O</label>
+            <input type="number" class="form-control" v-model="record.ro">
+          </div>
+  
+          <div class="form-group">
+            <label>Make</label>
+            <input type="text" class="form-control" v-model="record.make">
+          </div>
+  
+          <div class="form-group">
+            <label>Model</label>
+            <input type="text" class="form-control" v-model="record.model">
+          </div>
+  
+          <div class="form-group">
+            <label>Color</label>
+            <input type="text" class="form-control" v-model="record.color">
+          </div>
+  
+          <div class="form-group">
+            <label>Department</label>
+            <select class="form-control" v-model="record.department">
+              <option>Paint</option>
+              <option>Body</option>
+              <option>Parts</option>
+              <option>Supplement</option>
+              <option>Detail </option>
+              <option>Detail </option>
+            </select>
+          </div>
+  
+          <div>
+            <label>Duration</label>
+            <input type="text" class="form-control" placeholder="Duration in days">
+          </div>
+  
+          <div class="form-group">
+            <label>Technician</label>
+            <input type="text" class="form-control" v-model="record.technician">
+          </div>
+  
+          <div class="form-group">
+            <label>Status</label>
+            <input type="text" class="form-control" v-model="record.status">
+          </div>
+  
+          <!-- Added New Note Field -->
+          <div class="form-group">
+            <label>Add Note</label>
+            <textarea class="form-control" v-model="newNote"></textarea>
+            <button type="button" class="btn btn-secondary mt-2" @click="addNote">Add Note</button>
+          </div>
+  
+          <router-link to="/view" class="btn btn-danger mx-2">Update</router-link>
+          
+  
+        </form>
+      </div>
+  
+      <!-- Added New Section for Stored Notes -->
+      <div class="col-md-6">
+        <router-link to="/addphoto" class="btn btn-primary mx-2">View Photos</router-link>
+        <h3 class="text-center">Stored Notes</h3>
+        <ul>
+          <li v-for="note in storedNotes" :key="note">{{ note }}</li>
+        </ul>
+      </div>
     </div>
-</template>
-
-<script>
-import axios from "axios";
-
-export default {
-     data() {
-        return {
-            student: { }
-        }
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        record: {},
+        newNote: "", // New note to be added
+        storedNotes: [] // Array for storing notes
+      };
     },
     created() {
-        let apiURL = `https://student-management-api.azurewebsites.net/student/${this.$route.params.id}`;
-
-        axios.get(apiURL).then((res) => {
-            this.student = res.data;
-        })
+      this.record = {
+        ro: 3234,
+        make: 'Chevrolet',
+        model: 'Camaro',
+        color: 'Black',
+        department: 'Paint',
+        technician: 'Jose',
+        status: 'green'
+      };
     },
     methods: {
-        handleUpdateForm() {
-            let apiURL = `https://student-management-api.azurewebsites.net/student${this.$route.params.id}`;
-
-            axios.put(apiURL, this.student).then((res) => {
-                console.log(res)
-                this.$router.push('/view')
-            }).catch(error => {
-                console.log(error)
-            });
+      handleUpdateForm() {
+        console.log('Updated Record:', this.record);
+      },
+      addNote() {
+        if (this.newNote.trim() !== "") {
+          this.storedNotes.push(this.newNote);
+          this.newNote = ""; // Reset new note input
         }
+      }
     }
-    }
-</script>
+  };
+  </script>
+  

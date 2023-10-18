@@ -1,68 +1,64 @@
 <template>
-    <div class="row justify-content-center">
-      <table class="table table-striped">
-        <thead class="table-dark">
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Student ID</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th> 
-          </tr>
-        </thead>
-        <tbody>
-         <tr v-for="student in Students" :key="student._id">
-            <td>{{ student.firstName }}</td>
-            <td>{{ student.lastName }}</td>
-            <td>{{ student.studentID }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.phoneNumber }}</td>
-             <td>
-              <router-link :to="{name: 'edit', params: { id: student._id }}" class="btn btn-success ">Edit</router-link>
-              <button @click.prevent="deleteStudent(student._id)" class="btn btn-danger mx-2">Delete</button>
-            </td> 
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </template>
-  
-  <script>
-      import axios from "axios";
-  
-      export default {
-          data() {
-              return {
-                //variable (Javascript Object) to hold students data coming from backend
-                  Students: []
-              }
-          },
-          // this is using created hook 
-          created() {
-            //make call to backend GET students
-              let apiURL = 'https://student-management-api.azurewebsites.net/student';
-              axios.get(apiURL).then(res => {
-                  this.Students = res.data;
-              }).catch(error => {
-                  console.log(error)
-              }); 
-          },
-          methods: {
-              deleteStudent(id){
-                  let apiURL = `https://student-management-api.azurewebsites.net/student/${id}`;
-                  let indexOfArrayItem = this.Students.findIndex(i => i._id === id);
-  
-                  if (window.confirm("Do you really want to delete?")) {
-                    //call to backend
-                      axios.delete(apiURL).then(() => {
-                        //remove one element from Students array object to update data
-                          this.Students.splice(indexOfArrayItem, 1);
-                      }).catch(error => {
-                          console.log(error)
-                      });
-                  }
-              }
-          }
+  <div class="row justify-content-center">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>R/O</th>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Color</th>
+          <th>Department</th>
+          <th>Duration</th> <!-- New Header -->
+          <th>Customer Last Name</th> <!-- New Header -->
+          <th>Technician</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="record in records" :key="record.ro">
+          <td>{{ record.ro }}</td>
+          <td>{{ record.make }}</td>
+          <td>{{ record.model }}</td>
+          <td>{{ record.color }}</td>
+          <td>{{ record.department }}</td>
+          <td>{{ record.duration }} days</td> <!-- New Field -->
+          <td>{{ record.customerLastName }}</td> <!-- New Field -->
+          <td>{{ record.technician }}</td>
+          <td :class="record.status === 'green' ? 'bg-success' : ''"></td>
+          <td>
+            <router-link to="/edit" class="btn btn-success mx-2">Edit</router-link>
+            <button @click.prevent="deleteRecord(record.ro)" class="btn btn-danger mx-2">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      records: [
+        { ro: 3234, make: 'Chevrolet', model: 'Camaro', color: 'Black', department: 'Paint', technician: 'Jose', status: 'green', customerLastName: 'Mann', duration: 5 },  // Updated Record
+        // add more records here
+      ],
+    };
+  },
+  methods: {
+    deleteRecord(ro) {
+      let indexOfArrayItem = this.records.findIndex(i => i.ro === ro);
+      if (window.confirm("Do you really want to delete?")) {
+        this.records.splice(indexOfArrayItem, 1);
       }
-  </script>
+    },
+  },
+};
+</script>
+
+<style>
+.bg-success {
+  background-color: green;
+}
+</style>

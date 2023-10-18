@@ -48,6 +48,18 @@
                 </select>
               </div>
               <div class="form-group">
+                <label>Duration (days)</label>
+                <input type="number" class="form-control" v-model="vehicle.duration">
+              </div>
+              <div class="form-group">
+                <label>Technician</label>
+                <select class="form-control" v-model="vehicle.technician">
+                  <option value="Lupe">Lupe</option>
+                  <option value="Israel">Israel</option>
+                  <option value="Abel">Abel</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Size of Job</label>
                 <select class="form-control" v-model="vehicle.sizeOfJob">
                   <option value="sm">Small</option>
