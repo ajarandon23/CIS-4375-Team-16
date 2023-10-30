@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import Login from '@/views/Login.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/create',
@@ -50,5 +56,12 @@ const router = createRouter({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('isAuthenticated');
+  // Replace 'HomeView' with the name of your main view or dashboard
+  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+  else next()
+});
+
 
 export default router

@@ -28,6 +28,8 @@
         </div>
       </li>
         </ul>
+        <!-- Inside your template section of HomeView.vue -->
+        
 
         <nav class="navbar navbar-light bg-light">
           <form class="form-inline">
