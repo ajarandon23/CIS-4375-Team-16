@@ -20,7 +20,7 @@ CREATE TABLE Vehicles (
    Model varchar(100) NOT NULL ,
    Color varchar(100) NOT NULL ,
    ModelYear year ,
-   LicencePlate varchar(10) ,
+   LicensePlate varchar(10) ,
    VehicleRO int ,
    CustomerLastName varchar(100) ,
    FOREIGN KEY (CustomerLastName) REFERENCES Customers (LastName) ,
