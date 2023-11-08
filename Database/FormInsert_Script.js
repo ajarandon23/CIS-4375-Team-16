@@ -10,37 +10,21 @@ var con = mysql.createConnection({
 
 
 // Assuming 'name' and 'address' come from form inputs
-var CformInputName = req.body.name; // Replace 'req.body.name' with your actual form input for name
-var CformInputAddress = req.body.address; // Replace 'req.body.address' with your actual form input for address
+var CformInputFirstName = req.body.Firstname; // Replace 'req.body.name' with your actual form input for name
+var CformInputLastName = req.body.Lastname; // Replace 'req.body.address' with your actual form input for address
+var CformInputPhone = req.body.Phone;
+var CformInputEmail = req.body.Email;
+var CformInputAddress = req.body.Address;
+var CformInputInsurance = req.body.Insurance;
 
 con.connect(function(err) {
   if (err) throw err;
-  var sql = "INSERT INTO customers (name, address) VALUES (?, ?)";
-  con.query(sql, [formInputName, formInputAddress], function (err, result) {
+  var sql = "INSERT INTO Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance) VALUES (?, ?, ?, ?, ?, ?)";
+  con.query(sql, [CformInputFirstName, CformInputLastName, CformInputPhone, CformInputEmail, CformInputAddress, CformInputInsurance], function (err, result) {
     if (err) throw err;
     console.log("1 record inserted, ID: " + result.insertId);
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
