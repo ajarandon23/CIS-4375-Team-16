@@ -1,3 +1,4 @@
+//Create sample data
 Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
 Values ('Jordan', 'Belfort', '(713) 485-4568',	'jordan.belfort@gmail.com',	'1451 Kenna Cove Ln., Spring, TX', 'Self');
 
@@ -16,10 +17,3 @@ Values ('2023-11-09', '2023-11-12',	'3785',	'Body', 'Lewis');
 Insert Into VehicleNotes (Note, VehicleRO)
 Values ('Car front bumper was painted and cleared', '3785');
 
-Insert Into Departments (DepartmentName)
-Values 
-('Body'),
-('Paint'),
-('Service'),
-('Detail'),
-('Inspection');
