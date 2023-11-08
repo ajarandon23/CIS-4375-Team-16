@@ -9,7 +9,7 @@ var con = mysql.createConnection({
 });
 
 
-// Assuming 'name' and 'address' come from form inputs
+// Assuming the variables come from form inputs
 var CformInputFirstName = req.body.Firstname; // Replace 'req.body.name' with your actual form input for name
 var CformInputLastName = req.body.Lastname; // Replace 'req.body.address' with your actual form input for address
 var CformInputPhone = req.body.Phone;
@@ -26,6 +26,23 @@ con.connect(function(err) {
   });
 });
 
+
+// Assuming the variables come from form inputs
+var VformInputFirstName = req.body.Firstname; // Replace 'req.body.name' with your actual form input for name
+var VformInputLastName = req.body.Lastname; // Replace 'req.body.address' with your actual form input for address
+var VformInputPhone = req.body.Phone;
+var VformInputEmail = req.body.Email;
+var VformInputAddress = req.body.Address;
+var VformInputInsurance = req.body.Insurance;
+
+con.connect(function(err) {
+  if (err) throw err;
+  var sql = "INSERT INTO Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance) VALUES (?, ?, ?, ?, ?, ?)";
+  con.query(sql, [CformInputFirstName, CformInputLastName, CformInputPhone, CformInputEmail, CformInputAddress, CformInputInsurance], function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted, ID: " + result.insertId);
+  });
+});
 
 
 
