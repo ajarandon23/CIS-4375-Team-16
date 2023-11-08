@@ -28,17 +28,19 @@ con.connect(function(err) {
 
 
 // Assuming the variables come from form inputs
-var VformInputFirstName = req.body.Firstname; // Replace 'req.body.name' with your actual form input for name
-var VformInputLastName = req.body.Lastname; // Replace 'req.body.address' with your actual form input for address
-var VformInputPhone = req.body.Phone;
-var VformInputEmail = req.body.Email;
-var VformInputAddress = req.body.Address;
-var VformInputInsurance = req.body.Insurance;
+var VformInputVIN = req.body.VehicleVIN; 
+var VformInputMake = req.body.Make; 
+var VformInputModel = req.body.Model;
+var VformInputColor = req.body.Color;
+var VformInputYear = req.body.ModelYear;
+var VformInputLicense = req.body.LicensePlate;
+var VformInputRO = req.body.VehicleRO;
+var VformInputCustomerLastName = req.body.CustomerLastName;
 
 con.connect(function(err) {
   if (err) throw err;
-  var sql = "INSERT INTO Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance) VALUES (?, ?, ?, ?, ?, ?)";
-  con.query(sql, [CformInputFirstName, CformInputLastName, CformInputPhone, CformInputEmail, CformInputAddress, CformInputInsurance], function (err, result) {
+  var sql = "INSERT INTO Vehicles (VehicleVIN, Make, Model, Color, ModelYear, LicensePlate, VehicleRO, CustomerLastName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  con.query(sql, [VformInputVIN, VformInputMake, VformInputModel, VformInputColor, VformInputYear, VformInputLicense, VformInputRO, VformInputCustomerLastName], function (err, result) {
     if (err) throw err;
     console.log("1 record inserted, ID: " + result.insertId);
   });
