@@ -65,7 +65,53 @@ con.connect(function(err) {
 });
 
 
+// Assuming the variables come from form inputs
+var EformInputFirstName = req.body.Firstname; // Replace 'req.body.name' with your actual form input for name
+var EformInputLastName = req.body.Lastname; // Replace 'req.body.address' with your actual form input for address
+var EformInputJobtitle = req.body.JobTitle;
+var EformInputEmail = req.body.Email;
+var EformInputPhone = req.body.Phone;
+var EformInputDptname = req.body.DepartmentName;
 
+con.connect(function(err) {
+  if (err) throw err;
+  var sql = "INSERT INTO Employees (FirstName, LastName, JobTitle, Email, Phone, DepartmentName) VALUES (?, ?, ?, ?, ?, ?)";
+  con.query(sql, [EformInputFirstName, EformInputLastName, EformInputJobtitle, EformInputEmail, EformInputPhone, EformInputDptname], function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted, ID: " + result.insertId);
+  });
+});
+
+
+// Assuming the variables come from form inputs
+var TformInputenterd = req.body.EnterDate; // Replace 'req.body.name' with your actual form input for name
+var TformInputexitd = req.body.ExitDate; // Replace 'req.body.address' with your actual form input for address
+var TformInputvehiclero = req.body.VehicleRO;
+var TformInputdeptname = req.body.DepartmentName;
+var TformInputtechnician = req.body.TaskTechnician;
+
+con.connect(function(err) {
+  if (err) throw err;
+  var sql = "INSERT INTO DepartmentTask (EnterDate, ExitDate, VehicleRO, DepartmentName, TaskTechnician) VALUES (?, ?, ?, ?, ?)";
+  con.query(sql, [TformInputenterd, TformInputexitd, TformInputvehiclero, TformInputdeptname, TformInputtechnician], function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted, ID: " + result.insertId);
+  });
+});
+
+
+// Assuming the variables come from form inputs
+var NformInputnote = req.body.VehicleNote; 
+var NformInputvehiclero = req.body.VehicleRO; 
+
+con.connect(function(err) {
+  if (err) throw err;
+  var sql = "INSERT INTO VehicleNotes (Note, VehicleRO) VALUES (?, ?)";
+  con.query(sql, [NformInputnote, NformInputvehiclero], function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted, ID: " + result.insertId);
+  });
+});
 
 
 
