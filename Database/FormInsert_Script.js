@@ -47,7 +47,22 @@ con.connect(function(err) {
 });
 
 
+// Assuming the variables come from form inputs
+var RformInputopendate = req.body.OpenDate; 
+var RformInputestdate = req.body.EstimatedEndDate; 
+var RformInputactdate = req.body.ActualEndDate;
+var RformInputrepairsize = req.body.RepairSize;
+var RformInputcustlastname = req.body.CustomerLastName;
+var RformInputvehiclero = req.body.VehicleRO;
 
+con.connect(function(err) {
+  if (err) throw err;
+  var sql = "INSERT INTO RepairOrder (OpenDate, EstimatedEndDate, ActualEndDate, RepairSize, CustomerLastName, VehicleRO) VALUES (?, ?, ?, ?, ?, ?)";
+  con.query(sql, [RformInputopendate, RformInputestdate, RformInputactdate, RformInputrepairsize, RformInputcustlastname, RformInputvehiclero], function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted, ID: " + result.insertId);
+  });
+});
 
 
 
