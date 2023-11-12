@@ -83,3 +83,70 @@ WHERE ID = 10; -- Replace 'ID' with the primary key column and '123' with the ac
 DELETE FROM VehicleNotes
 WHERE ID = 10; -- Replace 'ID' with the primary key column and '123' with the actual ID
 
+
+
+-- ========================================================
+-- ========================================================
+-- ========================================================
+-- ========================================================
+-- ========================================================
+
+
+
+Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
+Values ('Jordan', 'Belfort', '(713) 485-4568',	'jordan.belfort@gmail.com',	'1451 Kenna Cove Ln., Spring, TX', 'Self-pay');
+
+-- Insert Vehicle
+Insert Into Vehicles (VehicleVIN, Make, Model, Color, ModelYear, LicensePlate, VehicleRO, CustomerLastName)
+Values ('48161545', 'Ford', 'Mustang', 'Red', '2012', 'FPC-2200', '3785', 'Belfort');
+
+-- Insert RepairOrder
+Insert Into RepairOrder (OpenDate, EstimatedEndDate, ActualEndDate, RepairSize, CustomerLastName, VehicleRO)
+Values ('2023-11-08', '2023-11-22', '2023-11-21',	'Medium', 'Belfort', '3785');
+
+
+Insert Into Departments (DepartmentName)
+Values ('Body');
+Insert Into Departments (DepartmentName)
+Values ('Detail');
+Insert Into Departments (DepartmentName)
+Values ('Paint');
+Insert Into Departments (DepartmentName)
+Values ('Service');
+
+
+-- Insert Employee
+Insert Into Employees (FirstName, LastName, JobTitle, Email, Phone, DepartmentName)
+Values ('Johnathan', 'Lewis', 'Technician', 'john.lewis@gmail.com', '(713) 486-1534', 'Service');
+
+Insert Into Employees (FirstName, LastName, JobTitle, Email, Phone, DepartmentName)
+Values ('Will', 'Smith', 'Painter', 'willsmith@gmail.com', '(713) 123-1111', 'Paint');
+
+
+Insert Into Employees (FirstName, LastName, JobTitle, Email, Phone, DepartmentName)
+Values ('John', 'Clark', 'Technician', 'willsmith@gmail.com', '(713) 123-1111', 'Body');
+
+Insert Into Employees (FirstName, LastName, JobTitle, Email, Phone, DepartmentName)
+Values ('William', 'Watson', 'Technician', 'willsmith@gmail.com', '(713) 123-1111', 'Detail');
+
+
+
+-- Insert DepartmentTask
+Insert Into DepartmentTask (EnterDate, ExitDate, VehicleRO, DepartmentName, TaskTechnician)
+Values ('2023-11-09', '2023-11-12',	'3785','Service', 'Johnathan');
+
+-- Insert VehicleNote
+Insert Into VehicleNotes (Note, VehicleRO)
+Values ('Car front bumper was painted and cleared', '3785');
+
+
+
+
+select * from customers;
+select * from  Vehicles;
+select * from  RepairOrder;
+select * from  Employees;
+select * from  DepartmentTask;
+select * from  VehicleNotes;
+select * from  Departments;
+
