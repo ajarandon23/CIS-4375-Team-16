@@ -10,7 +10,6 @@ CREATE TABLE Customers (
    Email varchar(100) NOT NULL ,
    Address varchar(255) NOT NULL ,
    Selfpay_Insurance ENUM('Self-pay', 'Insurance') NOT NULL ,
-   Index (LastName)
 );
 
 CREATE TABLE Vehicles (
@@ -22,8 +21,8 @@ CREATE TABLE Vehicles (
    ModelYear year ,
    LicensePlate varchar(10) ,
    VehicleRO int ,
-   CustomerLastName varchar(100) ,
-   FOREIGN KEY (CustomerLastName) REFERENCES Customers (LastName) ,
+   CustomerID varchar(100) ,
+   FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID) ,
    Index (VehicleRO)
 );
 
@@ -33,9 +32,9 @@ CREATE TABLE RepairOrder (
    EstimatedEndDate date NOT NULL ,
    ActualEndDate date ,
    RepairSize ENUM('Small', 'Medium', 'Large', 'X-large') NOT NULL ,
-   CustomerLastName varchar(100) ,
+   CustomerID varchar(100) ,
    VehicleRO int ,
-   FOREIGN KEY (CustomerLastName) REFERENCES Customers (LastName) ,
+   FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID) ,
    FOREIGN KEY (VehicleRO) REFERENCES Vehicles (VehicleRO) 
 );
 
