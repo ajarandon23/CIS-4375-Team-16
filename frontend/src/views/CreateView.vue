@@ -81,12 +81,12 @@ export default {
   data() {
     return {
       student: {
-        FirstName: 'asd',
-        LastName: 'qweq',
-        Email: 'ad@gmail.com',
-        Phone: '2321',
-        Address: '123asdas',
-        Selfpay_Insurance: 'Insurance', // Set to an initial value
+        FirstName: '',
+        LastName: '',
+        Email: '',
+        Phone: '',
+        Address: '',
+        Selfpay_Insurance: '', // Set to an initial value
       },
       errors: {
         FirstName: null,

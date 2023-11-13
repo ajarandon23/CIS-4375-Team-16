@@ -4,39 +4,18 @@
     <nav class="navbar navbar-expand navbar-light bg-light">
       <div class="container">
         <a class="navbar-brand float-left" href="/">Productivty Management App</a>
-        <ul class="nav navbar-nav mr-auto" >
+        <ul class="nav navbar-nav mr1-auto" >
           <li class="nav-item">
             <router-link class="nav-link" to="/">Home</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/create">Add Vehicle</router-link>
           </li>
-          <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Car List
-        </a>
-        <!-- added all drop down buttons need to have scripts for the filters
-           to work through the database -->
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <router-link class="nav-link" to="/view">All Cars</router-link>
-          <router-link class="nav-link" to="/view">Paint dept</router-link>
-          <router-link class="nav-link" to="/view">Body dept</router-link>
-          <router-link class="nav-link" to="/view">Parts dept</router-link>
-          <router-link class="nav-link" to="/view">Detail dept</router-link>
-          <router-link class="nav-link" to="/view">Delivery</router-link>
-          
-        </div>
-      </li>
-        </ul>
-        <!-- Inside your template section of HomeView.vue -->
+          <li class="nav-item">
+            <router-link class="nav-link" to="/view">Cars List</router-link>
+          </li>
         
-
-        <nav class="navbar navbar-light bg-light">
-          <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </nav>
+        </ul>
       </div>
     </nav>
 

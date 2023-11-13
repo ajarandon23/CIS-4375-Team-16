@@ -11,9 +11,9 @@ app.use(cors());
 
 // MySQL Connection
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'admin',
+  host: 'projectteam16database.cryr44bo2odx.us-east-2.rds.amazonaws.com',
+  user: 'admin',
+  password: 'Cougarnet2023',
   database: 'ProjectTeam16V3',
 });
 
@@ -193,11 +193,11 @@ app.delete('/api/vehicles/:vehicleRO', (req, res) => {
 });
 
 app.get('/api/management', (req, res) => {
-  // Implement logic to retrieve records for the management page
-  const sql = `SELECT DISTINCT V.VehicleRO, V.Make, V.Model, V.Color, R.RepairSize, V.CustomerLastName, DT.TaskTechnician AS Technician
-  FROM Vehicles V
-  INNER JOIN RepairOrder R ON V.VehicleRO = R.VehicleRO
-  INNER JOIN DepartmentTask DT ON R.VehicleRO = DT.VehicleRO;;
+  const sql = `
+    SELECT V.VehicleRO, V.Make, V.Model, V.Color, DT.DepartmentName, R.RepairSize, V.CustomerLastName, DT.TaskTechnician AS Technician
+    FROM Vehicles V
+    INNER JOIN RepairOrder R ON V.VehicleRO = R.VehicleRO
+    INNER JOIN DepartmentTask DT ON R.VehicleRO = DT.VehicleRO;
   `;
   db.query(sql, (err, results) => {
     if (err) {
