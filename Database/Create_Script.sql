@@ -89,7 +89,7 @@ Values
 ('Inspection');
 
 Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
-Values ('John', 'Smith', '(713) 555-1234',	'john.smith@gmail.com',	'123 Main St, Anytown, USA', 'Self-pay');
+Values ('John', 'Smith', '(713) 555-1234', 'john.smith@gmail.com', '123 Main St, Anytown, USA', 'Self-pay');
 
 Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
 Values ('Jordan', 'Belfort', '(713) 485-4568',	'jordan.belfort@gmail.com',	'1451 Kenna Cove Ln., Spring, TX', 'Self-pay');
