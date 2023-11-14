@@ -6,7 +6,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label>Vehicle Title</label>
+              <label>Vehicle R/O</label>
               <input
                 type="text"
                 class="form-control"
@@ -15,7 +15,7 @@
               />
             </div>
             <div class="form-group">
-              <label>Registration Number</label>
+              <label>License Plate</label>
               <input
                 type="text"
                 class="form-control"
@@ -34,6 +34,15 @@
             </div>
             <div class="form-group">
               <label>Model</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="vehicle.Model"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Year</label>
               <input
                 type="text"
                 class="form-control"
@@ -151,18 +160,18 @@ export default {
   data() {
     return {
       vehicle: {
-        VehicleRO: '2222',
-        LicensePlate: 'F-123',
+        VehicleRO: '',
+        LicensePlate: '',
         Make: 'Audi',
         Model: 'Audi A3',
         ModelYear: '2022',
         Color: 'Blue',
-        VehicleVIN: 'ABC123',
+        VehicleVIN: '',
         OpenDate: '2022-01-01',
         EstimatedEndDate: '2022-01-10',
         DepartmentName: '',
-        RepairSize: 'Small',
-        CustomerLastName: this.$route.params.customerLastName,
+        RepairSize: '',
+        CustomerID: this.$route.params.CustomerID,
         TaskTechnician: '',
       },
       departments: [],

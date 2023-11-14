@@ -34,7 +34,7 @@
           <td>{{ record.Color }}</td>
           <td>{{ record.DepartmentName}}</td>
           <td>{{ record.RepairSize }}</td>
-          <td>{{ record.CustomerLastName }}</td>
+          <td>{{ record.LastName }}</td>
           <td>{{ record.Technician }}</td>
           <td :class="record.Status === 'green' ? 'bg-success' : ''">{{ record.Status }}</td>
           <td>
@@ -63,6 +63,7 @@ export default {
     this.fetchDepartments();
     this.fetchRecords();
   },
+  
   methods: {
     fetchDepartments() {
       axios.get('http://localhost:3000/api/departments').then(response => {

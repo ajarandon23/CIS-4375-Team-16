@@ -8,7 +8,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="student.FirstName"
+            v-model="Customer.FirstName"
             required
           />
         </div>
@@ -17,7 +17,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="student.LastName"
+            v-model="Customer.LastName"
             required
           />
         </div>
@@ -26,7 +26,7 @@
           <input
             type="email"
             class="form-control"
-            v-model="student.Email"
+            v-model="Customer.Email"
             required
           />
         </div>
@@ -35,7 +35,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="student.Phone"
+            v-model="Customer.Phone"
             required
           />
         </div>
@@ -45,7 +45,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="student.Address"
+            v-model="Customer.Address"
             required
           />
         </div>
@@ -55,7 +55,7 @@
             type="radio"
             id="insurance"
             value="Insurance"
-            v-model="student.Selfpay_Insurance"
+            v-model="Customer.Selfpay_Insurance"
             required
           />
           <label for="insurance">Insurance</label>
@@ -63,7 +63,7 @@
             type="radio"
             id="self-pay"
             value="Self-pay"
-            v-model="student.Selfpay_Insurance"
+            v-model="Customer.Selfpay_Insurance"
             required
           />
           <label for="self-pay">Self-Pay</label>
@@ -80,12 +80,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      student: {
-        FirstName: '',
-        LastName: '',
-        Email: '',
-        Phone: '',
-        Address: '',
+      Customer: {
+        FirstName: 'test',
+        LastName: 'last',
+        Email: 'bored@email.com',
+        Phone: '8324554576',
+        Address: 'houston',
         Selfpay_Insurance: '', // Set to an initial value
       },
       errors: {
@@ -99,20 +99,20 @@ export default {
     };
   },
   watch: {
-    'student.insuranceOrSelfPay'(newVal) {
-      this.student.insuranceOrSelfPay = newVal ? 'Insurance' : 'Self-pay';
+    'Customer.insuranceOrSelfPay'(newVal) {
+      this.Customer.insuranceOrSelfPay = newVal ? 'Insurance' : 'Self-pay';
     },
   },
   methods: {
     validateForm() {
       this.errors = {
-        firstName: !this.student.firstName ? 'First Name is required' : null,
-        lastName: !this.student.lastName ? 'Last Name is required' : null,
-        email: !this.student.email ? 'Email is required' : null,
-        phoneNumber: !this.student.phoneNumber
+        firstName: !this.Customer.firstName ? 'First Name is required' : null,
+        lastName: !this.Customer.lastName ? 'Last Name is required' : null,
+        email: !this.Customer.Emailmail ? 'Email is required' : null,
+        phoneNumber: !this.Customer.phoneNumber
           ? 'Phone Number is required'
           : null,
-        insuranceOrSelfPay: !this.student.insuranceOrSelfPay
+        insuranceOrSelfPay: !this.Customer.insuranceOrSelfPay
           ? 'Payment Option is required'
           : null,
       };
@@ -122,20 +122,19 @@ export default {
     handleSubmitForm() {
       console.log('inside submit');
       if (true) {
-        console.log('inside submit valdation');
+        console.log('inside submit validation');
         let apiURL = 'http://localhost:3000/api/customers';
 
-        axios
-          .post(apiURL, this.student)
-          .then(() => {
-            //changing the view to the list
-            this.$router.push({
-              name: 'addvehicle',
-              params: {
-                customerLastName: this.student.LastName,
-              },
-            });
-            this.student = {
+        axios.post(apiURL, this.Customer)
+          .then((response) => {
+            // Assuming the response contains the new customer data including the ID
+            const newCustomerId = response.data.CustomerID; // Change 'id' to match the property name returned by your API
+
+            // Navigate to the addvehicle route with the new customer ID
+            this.$router.push({ name: 'addvehicle', params: { CustomerID: newCustomerId } });
+            console.log('customerid:', newCustomerId)
+
+            this.Customer = {
               FirstName: '',
               LastName: '',
               Email: '',
@@ -149,6 +148,7 @@ export default {
           });
       }
     },
+
   },
 };
 </script>

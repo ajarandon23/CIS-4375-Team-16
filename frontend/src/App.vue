@@ -9,7 +9,10 @@
             <router-link class="nav-link" to="/">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/create">Add Vehicle</router-link>
+            <router-link class="nav-link" to="/customers">Add Vehicle</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/create">Add Client</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/view">Cars List</router-link>

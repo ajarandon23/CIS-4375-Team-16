@@ -97,18 +97,19 @@ app.post('/api/vehicles', (req, res) => {
     Model,
     Color,
     ModelYear,
-    CustomerLastName,
     OpenDate,
     EstimatedEndDate,
     RepairSize,
     TaskTechnician,
     DepartmentName,
+    VehicleRO,
+    CustomerID,
   } = req.body;
 
-  const VehicleRO = generateVehicleRO();
+  
 
   const sql =
-    'INSERT INTO Vehicles (VehicleVIN, Make, Model,LicensePlate, Color, ModelYear, VehicleRO, CustomerLastName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO Vehicles (VehicleVIN, Make, Model,LicensePlate, Color, ModelYear, VehicleRO) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
   db.query(
     sql,
@@ -120,7 +121,7 @@ app.post('/api/vehicles', (req, res) => {
       Color,
       ModelYear,
       VehicleRO,
-      CustomerLastName,
+      
     ],
     (err, result) => {
       if (err) {
@@ -133,11 +134,11 @@ app.post('/api/vehicles', (req, res) => {
         });
 
         const sqlQueryForRepairOrder =
-          'INSERT INTO RepairOrder (OpenDate, EstimatedEndDate, RepairSize, CustomerLastName, VehicleRO) VALUES (?, ?, ?, ?, ?)';
+          'INSERT INTO RepairOrder (OpenDate, EstimatedEndDate, RepairSize,CustomerID, VehicleRO) VALUES (?, ?, ?, ?, ?)';
 
         db.query(
           sqlQueryForRepairOrder,
-          [OpenDate, EstimatedEndDate, RepairSize, CustomerLastName, VehicleRO],
+          [OpenDate, EstimatedEndDate, RepairSize, CustomerID, VehicleRO],
           (err, result) => {
             if (err) {
               console.error('Error adding repair order:', err);
@@ -194,11 +195,24 @@ app.delete('/api/vehicles/:vehicleRO', (req, res) => {
 
 app.get('/api/management', (req, res) => {
   const sql = `
-    SELECT V.VehicleRO, V.Make, V.Model, V.Color, DT.DepartmentName, R.RepairSize, V.CustomerLastName, DT.TaskTechnician AS Technician
-    FROM Vehicles V
-    INNER JOIN RepairOrder R ON V.VehicleRO = R.VehicleRO
-    INNER JOIN DepartmentTask DT ON R.VehicleRO = DT.VehicleRO;
-  `;
+  SELECT 
+    V.VehicleRO, 
+    V.Make, 
+    V.Model, 
+    V.Color, 
+    DT.DepartmentName, 
+    R.RepairSize, 
+    V.CustomerID, 
+    C.LastName,  
+    DT.TaskTechnician AS Technician
+FROM 
+    Vehicles V
+INNER JOIN 
+    RepairOrder R ON V.VehicleRO = R.VehicleRO
+INNER JOIN 
+    DepartmentTask DT ON R.VehicleRO = DT.VehicleRO
+INNER JOIN 
+    Customers C ON V.CustomerID = C.CustomerID;`;
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching management records:', err);
@@ -254,6 +268,14 @@ app.put('/api/vehicles/:vehicleRO', (req, res) => {
     RepairSize,
     Note,
   } = req.body;
+
+  app.get('/api/customers/search', async (req, res) => {
+    const lastName = req.query.lastName;
+    // Add database query to find customers by lastName
+    // Use parameterized queries to prevent SQL injection
+    // Send back the customer data
+  });
+  
 
   const updateVehicleSql =
     'UPDATE Vehicles SET Make=?, ModelYear=?, Color=? WHERE VehicleRO=?';
