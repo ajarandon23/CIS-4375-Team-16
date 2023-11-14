@@ -109,7 +109,7 @@ app.post('/api/vehicles', (req, res) => {
   
 
   const sql =
-    'INSERT INTO Vehicles (VehicleVIN, Make, Model,LicensePlate, Color, ModelYear, VehicleRO) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO Vehicles (VehicleVIN, Make, Model,LicensePlate, Color, ModelYear, VehicleRO,CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?,?)';
 
   db.query(
     sql,
@@ -121,6 +121,7 @@ app.post('/api/vehicles', (req, res) => {
       Color,
       ModelYear,
       VehicleRO,
+      CustomerID,
       
     ],
     (err, result) => {

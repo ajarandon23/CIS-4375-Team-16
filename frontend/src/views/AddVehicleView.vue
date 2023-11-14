@@ -160,18 +160,18 @@ export default {
   data() {
     return {
       vehicle: {
-        VehicleRO: '',
+        VehicleRO: '2345',
         LicensePlate: '',
         Make: 'Audi',
         Model: 'Audi A3',
         ModelYear: '2022',
         Color: 'Blue',
-        VehicleVIN: '',
+        VehicleVIN: 'sdf234',
         OpenDate: '2022-01-01',
         EstimatedEndDate: '2022-01-10',
         DepartmentName: '',
         RepairSize: '',
-        CustomerID: this.$route.params.CustomerID,
+        CustomerID: '',
         TaskTechnician: '',
       },
       departments: [],
@@ -180,6 +180,7 @@ export default {
   },
   mounted() {
     // Fetch departments when the component is mounted
+    this.vehicle.CustomerID = this.$route.params.CustomerID;
     this.fetchDepartments();
   },
   methods: {
@@ -195,10 +196,7 @@ export default {
     },
     fetchEmployeesInDepartment() {
       if (this.vehicle.DepartmentName) {
-        axios
-          .get(
-            `http://localhost:3000/api/employees/${this.vehicle.DepartmentName}`
-          )
+        axios.get(`http://localhost:3000/api/employees/${this.vehicle.DepartmentName}`)
           .then((response) => {
             this.employees = response.data;
           })
@@ -208,11 +206,11 @@ export default {
       }
     },
     handleSubmitForm() {
+      console.log("Submitting vehicle data:", this.vehicle);
       let apiURL = 'http://localhost:3000/api/vehicles';
-      axios
-        .post(apiURL, this.vehicle)
+      axios.post(apiURL, this.vehicle)
         .then((response) => {
-          console.log(response.data);
+          console.log('submit response', this.vehicle);
           this.$router.push('/addphoto');
         })
         .catch((error) => {

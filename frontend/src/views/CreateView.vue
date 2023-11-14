@@ -128,11 +128,12 @@ export default {
         axios.post(apiURL, this.Customer)
           .then((response) => {
             // Assuming the response contains the new customer data including the ID
-            const newCustomerId = response.data.CustomerID; // Change 'id' to match the property name returned by your API
+            const newCustomerId = response.data.id;
+            console.log('customerid:', response) // Change 'id' to match the property name returned by your API
 
             // Navigate to the addvehicle route with the new customer ID
             this.$router.push({ name: 'addvehicle', params: { CustomerID: newCustomerId } });
-            console.log('customerid:', newCustomerId)
+            
 
             this.Customer = {
               FirstName: '',
