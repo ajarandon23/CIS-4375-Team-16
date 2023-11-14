@@ -52,16 +52,24 @@
     methods: {
         fetchCustomers() {
             axios.get('http://localhost:3000/api/customers').then(response => {
-                this.allcustomers = response.data
+                this.allCustomers = response.data
                 this.customers = response.data;
                 console.log("customers data:",response.data);
         });    
         },
-        goToAddVehicle(CustomerId) {
-        this.$router.push({ name: 'addvehicle', params: { CustomerId: this.customer.CustomerId } });
-        console.log(response.data.CustomerID)
+        goToAddVehicle(customerid) {
+          this.$router.push({name: 'addvehicle', params: {CustomerID: customerid}});
         },
-    },
+        searchCustomers() {
+        if (this.searchQuery) {
+            this.customers = this.allCustomers.filter(customer => 
+                customer.LastName.toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
+        } else {
+            this.customers = this.allCustomers;
+        }
+        }
+      },
     
   };
   </script>
