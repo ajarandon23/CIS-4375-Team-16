@@ -1,6 +1,10 @@
 CREATE DATABASE ProjectTeam16V3;
 USE ProjectTeam16V3;
 
+SELECT * FROM Customers, Vehicles, RepairOrder, Departments, Employees, DepartmentTask, DepartmentTaskLogs, VehicleNotes;
+DROP table Customers, Vehicles, RepairOrder, Departments, Employees, DepartmentTask, DepartmentTaskLogs, VehicleNotes;
+delete from Customers;
+
 
 CREATE TABLE Customers (
    CustomerID int NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -62,12 +66,25 @@ CREATE TABLE DepartmentTask (
    DepartmentTaskID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
    EnterDate date NOT NULL,
    ExitDate date ,
+   CustomerID int ,
    VehicleRO int ,
    DepartmentName varchar(100) ,
    TaskTechnician varchar(100) ,
+   FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID),
    FOREIGN KEY (VehicleRO) REFERENCES Vehicles (VehicleRO),
    FOREIGN KEY (DepartmentName) REFERENCES Employees (DepartmentName),
    FOREIGN KEY (TaskTechnician) REFERENCES Employees (FirstName)
+);
+
+CREATE TABLE DepartmentTaskLogs (
+   DepartmentTaskLogID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   MoveDate date NOT NULL,
+   VehicleRO int ,
+   FromDepartmentID int ,
+   ToDepartmentID int ,
+   FOREIGN KEY (VehicleRO) REFERENCES Vehicles (VehicleRO),
+   FOREIGN KEY (FromDepartmentID) REFERENCES Departments (DepartmentID),
+   FOREIGN KEY (ToDepartmentID) REFERENCES Departments (DepartmentID)
 );
 
 CREATE TABLE VehicleNotes (
@@ -76,41 +93,3 @@ CREATE TABLE VehicleNotes (
    VehicleRO int ,
    FOREIGN KEY (VehicleRO) REFERENCES Vehicles (VehicleRO) 
 );
-
-
-ALTER TABLE Customers AUTO_INCREMENT=1001; 
-
-Insert Into Departments (DepartmentName)
-Values 
-('Body'),
-('Paint'),
-('Service'),
-('Detail'),
-('Inspection');
-
-Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
-Values ('John', 'Smith', '(713) 555-1234', 'john.smith@gmail.com', '123 Main St, Anytown, USA', 'Self-pay');
-
-Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
-Values ('Jordan', 'Belfort', '(713) 485-4568',	'jordan.belfort@gmail.com',	'1451 Kenna Cove Ln., Spring, TX', 'Self-pay');
-
-Insert Into Vehicles (VehicleVIN, Make, Model, Color, ModelYear, LicensePlate, VehicleRO, CustomerID)
-Values ('48161545', 'Ford', 'Mustang', 'Red', '2012', 'FPC-2200', '3785', '1001');
-
-Insert Into RepairOrder (OpenDate, EstimatedEndDate, ActualEndDate, RepairSize, CustomerID, VehicleRO)
-Values ('2023-11-08', '2023-11-22', '',	'Medium', '1001', '3785');
-
-Insert Into Employees (FirstName, LastName, JobTitle, Email, Phone, DepartmentName)
-Values ('Johnathan', 'Lewis', 'Technician', 'john.lewis@gmail.com', '(713) 486-1534', 'Service');
-
-Insert Into DepartmentTask (EnterDate, ExitDate, VehicleRO, DepartmentName, TaskTechnician)
-Values ('2023-11-09', '2023-11-12',	'3785',	'Service', 'Johnathan');
-
-Insert Into VehicleNotes (Note, VehicleRO)
-Values ('Car front bumper was painted and cleared', '3785');
-
-
-SELECT Vehicles.VehicleRO, Vehicles.Make, Vehicles.Model, Vehicles.Color, Vehicles.CustomerLastName, DepartmentTask.DepartmentName, DepartmentTask.ExitDate, DepartmentTask.TaskTechnician
-FROM Vehicles
-INNER JOIN DepartmentTask ON Vehicles.VehicleRO = DepartmentTask.VehicleRO
-ORDER BY Vehicles.VehicleRO;
