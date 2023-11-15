@@ -2,6 +2,9 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h3 class="text-center">Update Vehicle</h3>
+      <!-- needs to show start date and expected finish date-->
+
+      <!-- notes are not being save correctly  -->
       <form @submit.prevent="handleUpdateForm">
         <div class="form-group">
           <label>R/O</label>

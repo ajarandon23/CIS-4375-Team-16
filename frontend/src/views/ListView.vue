@@ -22,7 +22,6 @@
           <th>Repair Size</th>
           <th>Last Name</th>
           <th>Technician</th>
-          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -36,7 +35,6 @@
           <td>{{ record.RepairSize }}</td>
           <td>{{ record.LastName }}</td>
           <td>{{ record.Technician }}</td>
-          <td :class="record.Status === 'green' ? 'bg-success' : ''">{{ record.Status }}</td>
           <td>
             <router-link :to="{ name: 'edit', params: { id: record.VehicleRO } }" class="btn btn-success mx-2">Edit</router-link>
             <button @click.prevent="deleteRecord(record.VehicleRO)" class="btn btn-danger mx-2">Delete</button>
