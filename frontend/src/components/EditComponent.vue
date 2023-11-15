@@ -58,6 +58,24 @@
             </option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Enter Date</label>
+          <input
+            type="text"
+            readonly
+            class="form-control"
+            v-model="record.ModelYear"
+          />
+        </div>
+        <div class="form-group">
+          <label>Exit Date</label>
+          <input
+            type="text"
+            readonly
+            class="form-control"
+            v-model="record.ModelYear"
+          />
+        </div>
 
         <div class="form-group">
           <label>Duration (days)</label>

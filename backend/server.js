@@ -196,24 +196,17 @@ app.delete('/api/vehicles/:vehicleRO', (req, res) => {
 
 app.get('/api/management', (req, res) => {
   const sql = `
-  SELECT 
-    V.VehicleRO, 
-    V.Make, 
-    V.Model, 
-    V.Color, 
-    DT.DepartmentName, 
-    R.RepairSize, 
-    V.CustomerID, 
-    C.LastName,  
-    DT.TaskTechnician AS Technician
-FROM 
-    Vehicles V
-INNER JOIN 
-    RepairOrder R ON V.VehicleRO = R.VehicleRO
-INNER JOIN 
-    DepartmentTask DT ON R.VehicleRO = DT.VehicleRO
-INNER JOIN 
-    Customers C ON V.CustomerID = C.CustomerID;`;
+    SELECT
+      v.VehicleRO,
+      v.Make,
+      v.Model,
+      v.Color,
+      c.LastName
+  FROM
+      Vehicles v
+  JOIN
+      Customers c ON v.CustomerID = c.CustomerID;
+`;
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching management records:', err);
