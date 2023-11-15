@@ -1,28 +1,39 @@
 --Insert Sample data
 --Insert Customer
+Insert Into Departments (DepartmentName)
+Values 
+('Body'),
+('Paint'),
+('Detail'),
+('Supplement'),
+('Inspection'),
+('Delivery'),
+('Delivered')
+;
+
 Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
-Values ('Jordan', 'Belfort', '(713) 485-4568',	'jordan.belfort@gmail.com',	'1451 Kenna Cove Ln., Spring, TX', 'Self');
+Values ('John', 'Smith', '(713) 555-1234',	'john.smith@gmail.com',	'123 Main St, Anytown, USA', 'Self-pay');
 
---Insert Vehicle
-Insert Into Vehicles (VehicleVIN, Make, Model, Color, ModelYear, LicensePlate, VehicleRO, CustomerLastName)
-Values ('48161545', 'Ford', 'Mustang', 'Red', '2012', 'FPC-2200', '3785', 'Smith');
+Insert Into Customers (FirstName, LastName, Phone, Email, Address, Selfpay_Insurance)
+Values ('Jordan', 'Belfort', '(713) 485-4568',	'jordan.belfort@gmail.com',	'1451 Kenna Cove Ln., Spring, TX', 'Self-pay');
 
---Insert RepairOrder
-Insert Into RepairOrder (OpenDate, EstimatedEndDate, ActualEndDate, RepairSize, CustomerLastName, VehicleRO)
-Values ('2023-11-08', '2023-11-22', '',	'Medium', 'Belfort', '3785');
+Insert Into Vehicles (VehicleVIN, Make, Model, Color, ModelYear, LicensePlate, VehicleRO, CustomerID)
+Values ('48161545', 'Lamborghini', 'Huracan', 'Red', '2014', 'FPC-2200', '3785', '1');
 
---Insert Employee
+Insert Into Vehicles (VehicleVIN, Make, Model, Color, ModelYear, LicensePlate, VehicleRO, CustomerID)
+Values ('51793145', 'Nissan', 'GTR', 'Red', '2012', 'HZR-7000', '6434', '2');
+
+Insert Into RepairOrder (OpenDate, EstimatedEndDate, ActualEndDate, RepairSize, CustomerID, VehicleRO)
+Values ('2023-11-08', '2023-11-22', '',	'Medium', '1001', '3785');
+
 Insert Into Employees (FirstName, LastName, JobTitle, Email, Phone, DepartmentName)
 Values ('Johnathan', 'Lewis', 'Technician', 'john.lewis@gmail.com', '(713) 486-1534', 'Service');
 
---Insert DepartmentTask
 Insert Into DepartmentTask (EnterDate, ExitDate, VehicleRO, DepartmentName, TaskTechnician)
-Values ('2023-11-09', '2023-11-12',	'3785',	'Body', 'Lewis');
+Values ('2023-11-09', '2023-11-12',	'3785',	'Service', 'Johnathan');
 
---Insert VehicleNote
 Insert Into VehicleNotes (Note, VehicleRO)
 Values ('Car front bumper was painted and cleared', '3785');
-
 
 
 --Update Sample Data
