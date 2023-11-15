@@ -196,16 +196,28 @@ app.delete('/api/vehicles/:vehicleRO', (req, res) => {
 
 app.get('/api/management', (req, res) => {
   const sql = `
-    SELECT
-      v.VehicleRO,
-      v.Make,
-      v.Model,
-      v.Color,
-      c.LastName
-  FROM
-      Vehicles v
-  JOIN
-      Customers c ON v.CustomerID = c.CustomerID;
+        SELECT 
+        v.VehicleRO,
+        v.Make,
+        v.Model,
+        v.Color,
+        dt.DepartmentName as Department,
+        ro.RepairSize,
+        c.LastName as LastName,
+        e.FirstName as Technician
+      FROM 
+        Vehicles v
+      JOIN 
+        Customers c ON v.CustomerID = c.CustomerID
+      JOIN 
+        RepairOrder ro ON v.VehicleRO = ro.VehicleRO
+      JOIN 
+        DepartmentTask dt ON v.VehicleRO = dt.VehicleRO
+      LEFT JOIN 
+        Employees e ON dt.TaskTechnician = e.FirstName
+      WHERE
+        v.VehicleRO IS NOT NULL;
+
 `;
   db.query(sql, (err, results) => {
     if (err) {
