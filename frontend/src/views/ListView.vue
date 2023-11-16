@@ -31,7 +31,7 @@
           <td>{{ record.Make }}</td>
           <td>{{ record.Model }}</td>
           <td>{{ record.Color }}</td>
-          <td>{{ record.Department}}</td>
+          <td>{{ record.DepartmentName}}</td>
           <td>{{ record.RepairSize }}</td>
           <td>{{ record.LastName }}</td>
           <td>{{ record.Technician }}</td>

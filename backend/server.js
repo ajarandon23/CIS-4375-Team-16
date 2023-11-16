@@ -146,11 +146,11 @@ app.post('/api/vehicles', (req, res) => {
               res.status(500).send('Internal Server Error');
             } else {
               const sqlQueryForDepartmentTask =
-                'INSERT INTO DepartmentTask (EnterDate, VehicleRO, DepartmentName, TaskTechnician) VALUES (?, ?, ?, ?)';
+                'INSERT INTO DepartmentTask (EnterDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID) VALUES (?, ?, ?, ?,?)';
 
               db.query(
                 sqlQueryForDepartmentTask,
-                [OpenDate, VehicleRO, DepartmentName, TaskTechnician],
+                [OpenDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID],
                 (err, result) => {
                   if (err) {
                     console.error('Error adding department task:', err);
@@ -201,7 +201,7 @@ app.get('/api/management', (req, res) => {
         v.Make,
         v.Model,
         v.Color,
-        dt.DepartmentName as Department,
+        dt.DepartmentName as DepartmentName,
         ro.RepairSize,
         c.LastName as LastName,
         e.FirstName as Technician
@@ -273,6 +273,7 @@ app.put('/api/vehicles/:vehicleRO', (req, res) => {
     TaskTechnician,
     RepairSize,
     Note,
+    CustomerID,
   } = req.body;
 
   app.get('/api/customers/search', async (req, res) => {
@@ -306,11 +307,11 @@ app.put('/api/vehicles/:vehicleRO', (req, res) => {
               res.status(500).send('Internal Server Error');
             } else {
               const updateDepartmentTaskSql =
-                'UPDATE DepartmentTask SET EnterDate=?, DepartmentName=?, TaskTechnician=? WHERE VehicleRO=?';
+                'UPDATE DepartmentTask SET EnterDate=?, DepartmentName=?, TaskTechnician=?, CustomerID=? WHERE VehicleRO=?';
 
               db.query(
                 updateDepartmentTaskSql,
-                [new Date(), DepartmentName, TaskTechnician, vehicleRO],
+                [new Date(), DepartmentName, TaskTechnician, vehicleRO, CustomerID],
                 (err, result) => {
                   if (err) {
                     console.error('Error updating department task:', err);
