@@ -37,11 +37,6 @@
         </div>
 
         <div class="form-group">
-          <label>Color</label>
-          <input type="text" class="form-control" v-model="record.Color" />
-        </div>
-
-        <div class="form-group">
           <label>Department</label>
           <select
             class="form-control"
@@ -58,30 +53,7 @@
             </option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Enter Date</label>
-          <input
-            type="text"
-            readonly
-            class="form-control"
-            v-model="record.ModelYear"
-          />
-        </div>
-        <div class="form-group">
-          <label>Exit Date</label>
-          <input
-            type="text"
-            readonly
-            class="form-control"
-            v-model="record.ModelYear"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>Duration (days)</label>
-          <input type="number" class="form-control" v-model="record.duration" />
-        </div>
-
+    
         <div class="form-group">
           <label>Technician</label>
           <select class="form-control" v-model="record.TaskTechnician">
@@ -200,6 +172,7 @@ export default {
           TaskTechnician: this.record.TaskTechnician,
           RepairSize: this.record.RepairSize,
           Note: this.record.Note,
+          CustomerID: this.record.CustomerID,
         })
         .then((response) => {
           console.log(response.data);

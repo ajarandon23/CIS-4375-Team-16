@@ -89,6 +89,88 @@ app.post('/api/customers', (req, res) => {
   );
 });
 
+// app.post('/api/vehicles', (req, res) => {
+//   const {
+//     LicensePlate,
+//     VehicleVIN,
+//     Make,
+//     Model,
+//     Color,
+//     ModelYear,
+//     OpenDate,
+//     EstimatedEndDate,
+//     RepairSize,
+//     TaskTechnician,
+//     DepartmentName,
+//     VehicleRO,
+//     CustomerID,
+//   } = req.body;
+
+  
+
+//   const sql =
+//     'INSERT INTO Vehicles (VehicleVIN, Make, Model,LicensePlate, Color, ModelYear, VehicleRO,CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?,?)';
+
+//   db.query(
+//     sql,
+//     [
+//       VehicleVIN,
+//       Make,
+//       Model,
+//       LicensePlate,
+//       Color,
+//       ModelYear,
+//       VehicleRO,
+//       CustomerID,
+      
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         console.error('Error adding vehicle:', err);
+//         res.status(500).send('Internal Server Error');
+//       } else {
+//         console.log({
+//           id: result.insertId,
+//           message: 'Vehicle added successfully',
+//         });
+
+//         const sqlQueryForRepairOrder =
+//           'INSERT INTO RepairOrder (OpenDate, EstimatedEndDate, RepairSize,CustomerID, VehicleRO) VALUES (?, ?, ?, ?, ?)';
+
+//         db.query(
+//           sqlQueryForRepairOrder,
+//           [OpenDate, EstimatedEndDate, RepairSize, CustomerID, VehicleRO],
+//           (err, result) => {
+//             if (err) {
+//               console.error('Error adding repair order:', err);
+//               res.status(500).send('Internal Server Error');
+//             } else {
+//               const sqlQueryForDepartmentTask =
+//                 'INSERT INTO DepartmentTask (EnterDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID) VALUES (?, ?, ?, ?,?)';
+
+//               db.query(
+//                 sqlQueryForDepartmentTask,
+//                 [OpenDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID],
+//                 (err, result) => {
+//                   if (err) {
+//                     console.error('Error adding department task:', err);
+//                     res.status(500).send('Internal Server Error');
+//                   } else {
+//                     res.json({
+//                       id: result.insertId,
+//                       message: 'Vehicle added successfully 🚀',
+//                     });
+//                   }
+//                 }
+//               );
+//             }
+//           }
+//         );
+//       }
+//     }
+//   );
+// });
+
 app.post('/api/vehicles', (req, res) => {
   const {
     LicensePlate,
@@ -106,10 +188,8 @@ app.post('/api/vehicles', (req, res) => {
     CustomerID,
   } = req.body;
 
-  
-
   const sql =
-    'INSERT INTO Vehicles (VehicleVIN, Make, Model,LicensePlate, Color, ModelYear, VehicleRO,CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?,?)';
+    'INSERT INTO Vehicles (VehicleVIN, Make, Model, LicensePlate, Color, ModelYear, VehicleRO, CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 
   db.query(
     sql,
@@ -122,44 +202,53 @@ app.post('/api/vehicles', (req, res) => {
       ModelYear,
       VehicleRO,
       CustomerID,
-      
     ],
-    (err, result) => {
+    (err, vehicleResult) => {
       if (err) {
         console.error('Error adding vehicle:', err);
         res.status(500).send('Internal Server Error');
       } else {
-        console.log({
-          id: result.insertId,
-          message: 'Vehicle added successfully',
-        });
-
         const sqlQueryForRepairOrder =
-          'INSERT INTO RepairOrder (OpenDate, EstimatedEndDate, RepairSize,CustomerID, VehicleRO) VALUES (?, ?, ?, ?, ?)';
+          'INSERT INTO RepairOrder (OpenDate, EstimatedEndDate, RepairSize, CustomerID, VehicleRO) VALUES (?, ?, ?, ?, ?)';
 
         db.query(
           sqlQueryForRepairOrder,
           [OpenDate, EstimatedEndDate, RepairSize, CustomerID, VehicleRO],
-          (err, result) => {
+          (err, repairOrderResult) => {
             if (err) {
               console.error('Error adding repair order:', err);
               res.status(500).send('Internal Server Error');
             } else {
               const sqlQueryForDepartmentTask =
-                'INSERT INTO DepartmentTask (EnterDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID) VALUES (?, ?, ?, ?,?)';
+                'INSERT INTO DepartmentTask (EnterDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID) VALUES (?, ?, ?, ?, ?)';
 
               db.query(
                 sqlQueryForDepartmentTask,
                 [OpenDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID],
-                (err, result) => {
+                (err, departmentTaskResult) => {
                   if (err) {
                     console.error('Error adding department task:', err);
                     res.status(500).send('Internal Server Error');
                   } else {
-                    res.json({
-                      id: result.insertId,
-                      message: 'Vehicle added successfully 🚀',
-                    });
+                    // Insert into DepartmentTaskLogs with ToDepartmentID and leave FromDepartmentID as NULL
+                    const insertDepartmentTaskLogSql =
+                      'INSERT INTO DepartmentTaskLogs (MoveDate, VehicleRO, ToDepartmentID) VALUES (CURDATE(), ?, (SELECT DepartmentID FROM Departments WHERE DepartmentName = ?))';
+
+                    db.query(
+                      insertDepartmentTaskLogSql,
+                      [VehicleRO, DepartmentName],
+                      (err, departmentTaskLogResult) => {
+                        if (err) {
+                          console.error('Error inserting into DepartmentTaskLogs:', err);
+                          res.status(500).send('Internal Server Error');
+                        } else {
+                          res.json({
+                            id: vehicleResult.insertId,
+                            message: 'Vehicle added successfully 🚀',
+                          });
+                        }
+                      }
+                    );
                   }
                 }
               );
@@ -170,6 +259,9 @@ app.post('/api/vehicles', (req, res) => {
     }
   );
 });
+
+
+
 app.delete('/api/vehicles/:vehicleRO', (req, res) => {
   const vehicleRO = req.params.vehicleRO;
 
@@ -196,27 +288,23 @@ app.delete('/api/vehicles/:vehicleRO', (req, res) => {
 
 app.get('/api/management', (req, res) => {
   const sql = `
-        SELECT 
-        v.VehicleRO,
-        v.Make,
-        v.Model,
-        v.Color,
-        dt.DepartmentName as DepartmentName,
-        ro.RepairSize,
-        c.LastName as LastName,
-        e.FirstName as Technician
-      FROM 
-        Vehicles v
-      JOIN 
-        Customers c ON v.CustomerID = c.CustomerID
-      JOIN 
-        RepairOrder ro ON v.VehicleRO = ro.VehicleRO
-      JOIN 
-        DepartmentTask dt ON v.VehicleRO = dt.VehicleRO
-      LEFT JOIN 
-        Employees e ON dt.TaskTechnician = e.FirstName
-      WHERE
-        v.VehicleRO IS NOT NULL;
+      SELECT 
+      v.VehicleRO,
+      v.Make,
+      v.Model,
+      v.Color,
+      d.DepartmentName,
+      ro.RepairSize,
+      c.CustomerID,
+      c.LastName,
+      CONCAT(e.FirstName, ' ', e.LastName) AS Technician
+    FROM Vehicles v
+    JOIN RepairOrder ro ON v.VehicleRO = ro.VehicleRO
+    JOIN Customers c ON v.CustomerID = c.CustomerID
+    JOIN DepartmentTask dt ON v.VehicleRO = dt.VehicleRO
+    JOIN Departments d ON dt.DepartmentName = d.DepartmentName
+    JOIN Employees e ON dt.TaskTechnician = e.FirstName;
+
 
 `;
   db.query(sql, (err, results) => {
@@ -471,6 +559,9 @@ app.put('/api/vehicles/:vehicleRO', (req, res) => {
           console.error('Error updating repair order:', err);
           return res.status(500).send('Internal Server Error');
         }
+
+        console.log(`Updating DepartmentTask for VehicleRO: ${vehicleRO}, DepartmentName: ${DepartmentName}, TaskTechnician: ${TaskTechnician}, CustomerID: ${CustomerID}`);
+
 
         const updateDepartmentTaskSql =
           'UPDATE DepartmentTask SET DepartmentName=?, TaskTechnician=?, CustomerID=? WHERE VehicleRO=?';
