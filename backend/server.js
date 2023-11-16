@@ -262,6 +262,133 @@ app.get('/api/vehicles/:vehicleRO', (req, res) => {
   });
 });
 
+app.get('/api/customers/search', async (req, res) => {
+    const lastName = req.query.lastName;
+    // Add database query to find customers by lastName
+    // Use parameterized queries to prevent SQL injection
+    // Send back the customer data
+  });
+
+// app.put('/api/vehicles/:vehicleRO', (req, res) => {
+//   const vehicleRO = req.params.vehicleRO;
+//   const {
+//     Make,
+//     ModelYear,
+//     Color,
+//     DepartmentName,
+//     duration,
+//     TaskTechnician,
+//     RepairSize,
+//     Note,
+//     CustomerID,
+//   } = req.body;
+
+  
+  
+
+//   const updateVehicleSql =
+//     'UPDATE Vehicles SET Make=?, ModelYear=?, Color=? WHERE VehicleRO=?';
+
+//   db.query(
+//     updateVehicleSql,
+//     [Make, ModelYear, Color, vehicleRO],
+//     (err, result) => {
+//       if (err) {
+//         console.error('Error updating vehicle:', err);
+//         res.status(500).send('Internal Server Error');
+//       } else {
+//         const updateRepairOrderSql =
+//           'UPDATE RepairOrder SET RepairSize=? WHERE VehicleRO=?';
+
+//         db.query(
+//           updateRepairOrderSql,
+//           [RepairSize, vehicleRO],
+//           (err, result) => {
+//             if (err) {
+//               console.error('Error updating repair order:', err);
+//               res.status(500).send('Internal Server Error');
+//             } else {
+//               const updateDepartmentTaskSql =
+//                 'UPDATE DepartmentTask SET EnterDate=?, DepartmentName=?, TaskTechnician=?, CustomerID=? WHERE VehicleRO=?';
+
+//               db.query(
+//                 updateDepartmentTaskSql,
+//                 [new Date(), DepartmentName, TaskTechnician, vehicleRO, CustomerID],
+//                 (err, result) => {
+//                   if (err) {
+//                     console.error('Error updating department task:', err);
+//                     res.status(500).send('Internal Server Error');
+//                   } else {
+//                     if (Note) {
+//                       // Check if the note already exists
+//                       const checkNoteSql =
+//                         'SELECT * FROM VehicleNotes WHERE VehicleRO=?';
+
+//                       db.query(checkNoteSql, [vehicleRO], (err, results) => {
+//                         if (err) {
+//                           console.error('Error checking note:', err);
+//                           res.status(500).send('Internal Server Error');
+//                         } else {
+//                           if (results.length > 0) {
+//                             // Update existing note
+//                             const updateNoteSql =
+//                               'UPDATE VehicleNotes SET Note=? WHERE VehicleRO=?';
+
+//                             db.query(
+//                               updateNoteSql,
+//                               [Note, vehicleRO],
+//                               (err, result) => {
+//                                 if (err) {
+//                                   console.error('Error updating note:', err);
+//                                   res.status(500).send('Internal Server Error');
+//                                 } else {
+//                                   res.json({
+//                                     message:
+//                                       'Vehicle and note updated successfully 🚀',
+//                                   });
+//                                 }
+//                               }
+//                             );
+//                           } else {
+//                             // Insert new note
+//                             const insertNoteSql =
+//                               'INSERT INTO VehicleNotes (Note, VehicleRO) VALUES (?, ?)';
+
+//                             db.query(
+//                               insertNoteSql,
+//                               [Note, vehicleRO],
+//                               (err, result) => {
+//                                 if (err) {
+//                                   console.error('Error adding note:', err);
+//                                   res.status(500).send('Internal Server Error');
+//                                 } else {
+//                                   res.json({
+//                                     message:
+//                                       'Vehicle and note added successfully 🚀',
+//                                   });
+//                                 }
+//                               }
+//                             );
+//                           }
+//                         }
+//                       });
+//                     } else {
+//                       res.json({
+//                         message: 'Vehicle updated successfully 🚀',
+//                       });
+//                     }
+//                   }
+//                 }
+//               );
+//             }
+//           }
+//         );
+//       }
+//     }
+//   );
+// });
+
+// Function to generate a unique identifier for VehicleRO
 app.put('/api/vehicles/:vehicleRO', (req, res) => {
   const vehicleRO = req.params.vehicleRO;
   const {
@@ -269,124 +396,164 @@ app.put('/api/vehicles/:vehicleRO', (req, res) => {
     ModelYear,
     Color,
     DepartmentName,
-    duration,
     TaskTechnician,
     RepairSize,
     Note,
     CustomerID,
   } = req.body;
 
-  app.get('/api/customers/search', async (req, res) => {
-    const lastName = req.query.lastName;
-    // Add database query to find customers by lastName
-    // Use parameterized queries to prevent SQL injection
-    // Send back the customer data
-  });
-  
-
-  const updateVehicleSql =
-    'UPDATE Vehicles SET Make=?, ModelYear=?, Color=? WHERE VehicleRO=?';
-
+  // Step 1: Fetch the current department info
   db.query(
-    updateVehicleSql,
-    [Make, ModelYear, Color, vehicleRO],
-    (err, result) => {
+    'SELECT DepartmentName FROM DepartmentTask WHERE VehicleRO=?',
+    [vehicleRO],
+    (err, results) => {
       if (err) {
-        console.error('Error updating vehicle:', err);
-        res.status(500).send('Internal Server Error');
-      } else {
-        const updateRepairOrderSql =
-          'UPDATE RepairOrder SET RepairSize=? WHERE VehicleRO=?';
+        console.error('Error fetching current department:', err);
+        return res.status(500).send('Internal Server Error');
+      }
+
+      const currentDepartment = results[0] ? results[0].DepartmentName : null;
+
+      // Step 2: Compare with new department and update if it has changed
+      if (currentDepartment !== DepartmentName) {
+        // Department has changed, insert record into DepartmentTaskLogs
+        const insertDepartmentTaskLogSql =
+          'INSERT INTO DepartmentTaskLogs (MoveDate, VehicleRO, FromDepartmentID, ToDepartmentID) VALUES (CURDATE(), ?, (SELECT DepartmentID FROM Departments WHERE DepartmentName = ?), (SELECT DepartmentID FROM Departments WHERE DepartmentName = ?))';
 
         db.query(
-          updateRepairOrderSql,
-          [RepairSize, vehicleRO],
+          insertDepartmentTaskLogSql,
+          [vehicleRO, currentDepartment, DepartmentName],
           (err, result) => {
             if (err) {
-              console.error('Error updating repair order:', err);
-              res.status(500).send('Internal Server Error');
-            } else {
-              const updateDepartmentTaskSql =
-                'UPDATE DepartmentTask SET EnterDate=?, DepartmentName=?, TaskTechnician=?, CustomerID=? WHERE VehicleRO=?';
-
-              db.query(
-                updateDepartmentTaskSql,
-                [new Date(), DepartmentName, TaskTechnician, vehicleRO, CustomerID],
-                (err, result) => {
-                  if (err) {
-                    console.error('Error updating department task:', err);
-                    res.status(500).send('Internal Server Error');
-                  } else {
-                    if (Note) {
-                      // Check if the note already exists
-                      const checkNoteSql =
-                        'SELECT * FROM VehicleNotes WHERE VehicleRO=?';
-
-                      db.query(checkNoteSql, [vehicleRO], (err, results) => {
-                        if (err) {
-                          console.error('Error checking note:', err);
-                          res.status(500).send('Internal Server Error');
-                        } else {
-                          if (results.length > 0) {
-                            // Update existing note
-                            const updateNoteSql =
-                              'UPDATE VehicleNotes SET Note=? WHERE VehicleRO=?';
-
-                            db.query(
-                              updateNoteSql,
-                              [Note, vehicleRO],
-                              (err, result) => {
-                                if (err) {
-                                  console.error('Error updating note:', err);
-                                  res.status(500).send('Internal Server Error');
-                                } else {
-                                  res.json({
-                                    message:
-                                      'Vehicle and note updated successfully 🚀',
-                                  });
-                                }
-                              }
-                            );
-                          } else {
-                            // Insert new note
-                            const insertNoteSql =
-                              'INSERT INTO VehicleNotes (Note, VehicleRO) VALUES (?, ?)';
-
-                            db.query(
-                              insertNoteSql,
-                              [Note, vehicleRO],
-                              (err, result) => {
-                                if (err) {
-                                  console.error('Error adding note:', err);
-                                  res.status(500).send('Internal Server Error');
-                                } else {
-                                  res.json({
-                                    message:
-                                      'Vehicle and note added successfully 🚀',
-                                  });
-                                }
-                              }
-                            );
-                          }
-                        }
-                      });
-                    } else {
-                      res.json({
-                        message: 'Vehicle updated successfully 🚀',
-                      });
-                    }
-                  }
-                }
-              );
+              console.error('Error inserting into DepartmentTaskLogs:', err);
+              return res.status(500).send('Internal Server Error');
             }
+            // Continue with the rest of the update process
+            updateVehicleDetails();
           }
         );
+      } else {
+        // No department change, proceed with the update
+        updateVehicleDetails();
       }
     }
   );
+
+  // Function to update vehicle details
+  function updateVehicleDetails() {
+    const updateVehicleSql =
+      'UPDATE Vehicles SET Make=?, ModelYear=?, Color=? WHERE VehicleRO=?';
+
+    db.query(
+      updateVehicleSql,
+      [Make, ModelYear, Color, vehicleRO],
+      (err, result) => {
+        if (err) {
+          console.error('Error updating vehicle:', err);
+          return res.status(500).send('Internal Server Error');
+        }
+        // Update repair order and department task
+        updateRepairOrderAndDepartmentTask();
+      }
+    );
+  }
+
+  // Function to update repair order and department task
+  function updateRepairOrderAndDepartmentTask() {
+    const updateRepairOrderSql =
+      'UPDATE RepairOrder SET RepairSize=? WHERE VehicleRO=?';
+
+    db.query(
+      updateRepairOrderSql,
+      [RepairSize, vehicleRO],
+      (err, result) => {
+        if (err) {
+          console.error('Error updating repair order:', err);
+          return res.status(500).send('Internal Server Error');
+        }
+
+        const updateDepartmentTaskSql =
+          'UPDATE DepartmentTask SET DepartmentName=?, TaskTechnician=?, CustomerID=? WHERE VehicleRO=?';
+
+        db.query(
+          updateDepartmentTaskSql,
+          [DepartmentName, TaskTechnician, CustomerID, vehicleRO],
+          (err, result) => {
+            if (err) {
+              console.error('Error updating department task:', err);
+              return res.status(500).send('Internal Server Error');
+            }
+            // Update or add notes
+            updateOrAddNote();
+          }
+        );
+      }
+    );
+  }
+
+  // Function to update or add notes
+  function updateOrAddNote() {
+    if (Note) {
+      const checkNoteSql =
+        'SELECT * FROM VehicleNotes WHERE VehicleRO=?';
+
+      db.query(checkNoteSql, [vehicleRO], (err, results) => {
+        if (err) {
+          console.error('Error checking note:', err);
+          return res.status(500).send('Internal Server Error');
+        }
+
+        if (results.length > 0) {
+          // Update existing note
+          const updateNoteSql =
+            'UPDATE VehicleNotes SET Note=? WHERE VehicleRO=?';
+
+          db.query(
+            updateNoteSql,
+            [Note, vehicleRO],
+            (err, result) => {
+              if (err) {
+                console.error('Error updating note:', err);
+                return res.status(500).send('Internal Server Error');
+              }
+
+              res.json({
+                message: 'Vehicle and note updated successfully 🚀',
+              });
+            }
+          );
+        } else {
+          // Insert new note
+          const insertNoteSql =
+            'INSERT INTO VehicleNotes (Note, VehicleRO) VALUES (?, ?)';
+
+          db.query(
+            insertNoteSql,
+            [Note, vehicleRO],
+            (err, result) => {
+              if (err) {
+                console.error('Error adding note:', err);
+                return res.status(500).send('Internal Server Error');
+              } else {
+                res.json({
+                  message: 'Vehicle and note added successfully 🚀',
+                });
+              }
+            }
+          );
+        }
+      });
+    } else {
+      res.json({
+        message: 'Vehicle updated successfully 🚀',
+      });
+    }
+  }
 });
 
-// Function to generate a unique identifier for VehicleRO
+
+
+
 function generateVehicleRO() {
   const randomNum = Math.floor(Math.random() * Math.pow(10, 5))
     .toString()
