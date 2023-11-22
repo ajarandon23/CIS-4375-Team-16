@@ -89,87 +89,6 @@ app.post('/api/customers', (req, res) => {
   );
 });
 
-// app.post('/api/vehicles', (req, res) => {
-//   const {
-//     LicensePlate,
-//     VehicleVIN,
-//     Make,
-//     Model,
-//     Color,
-//     ModelYear,
-//     OpenDate,
-//     EstimatedEndDate,
-//     RepairSize,
-//     TaskTechnician,
-//     DepartmentName,
-//     VehicleRO,
-//     CustomerID,
-//   } = req.body;
-
-  
-
-//   const sql =
-//     'INSERT INTO Vehicles (VehicleVIN, Make, Model,LicensePlate, Color, ModelYear, VehicleRO,CustomerID) VALUES (?, ?, ?, ?, ?, ?, ?,?)';
-
-//   db.query(
-//     sql,
-//     [
-//       VehicleVIN,
-//       Make,
-//       Model,
-//       LicensePlate,
-//       Color,
-//       ModelYear,
-//       VehicleRO,
-//       CustomerID,
-      
-//     ],
-//     (err, result) => {
-//       if (err) {
-//         console.error('Error adding vehicle:', err);
-//         res.status(500).send('Internal Server Error');
-//       } else {
-//         console.log({
-//           id: result.insertId,
-//           message: 'Vehicle added successfully',
-//         });
-
-//         const sqlQueryForRepairOrder =
-//           'INSERT INTO RepairOrder (OpenDate, EstimatedEndDate, RepairSize,CustomerID, VehicleRO) VALUES (?, ?, ?, ?, ?)';
-
-//         db.query(
-//           sqlQueryForRepairOrder,
-//           [OpenDate, EstimatedEndDate, RepairSize, CustomerID, VehicleRO],
-//           (err, result) => {
-//             if (err) {
-//               console.error('Error adding repair order:', err);
-//               res.status(500).send('Internal Server Error');
-//             } else {
-//               const sqlQueryForDepartmentTask =
-//                 'INSERT INTO DepartmentTask (EnterDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID) VALUES (?, ?, ?, ?,?)';
-
-//               db.query(
-//                 sqlQueryForDepartmentTask,
-//                 [OpenDate, VehicleRO, DepartmentName, TaskTechnician, CustomerID],
-//                 (err, result) => {
-//                   if (err) {
-//                     console.error('Error adding department task:', err);
-//                     res.status(500).send('Internal Server Error');
-//                   } else {
-//                     res.json({
-//                       id: result.insertId,
-//                       message: 'Vehicle added successfully 🚀',
-//                     });
-//                   }
-//                 }
-//               );
-//             }
-//           }
-//         );
-//       }
-//     }
-//   );
-// });
 
 app.post('/api/vehicles', (req, res) => {
   const {
@@ -584,62 +503,97 @@ app.put('/api/vehicles/:vehicleRO', (req, res) => {
 
   // Function to update or add notes
   function updateOrAddNote() {
-    if (Note) {
-      const checkNoteSql =
-        'SELECT * FROM VehicleNotes WHERE VehicleRO=?';
+    res.json({
+      message: 'Vehicle updated successfully 🚀',
+    })
+    // if (Note) {
+    //   const checkNoteSql =
+    //     'SELECT * FROM VehicleNotes WHERE VehicleRO=?';
 
-      db.query(checkNoteSql, [vehicleRO], (err, results) => {
-        if (err) {
-          console.error('Error checking note:', err);
-          return res.status(500).send('Internal Server Error');
-        }
+    //   db.query(checkNoteSql, [vehicleRO], (err, results) => {
+    //     if (err) {
+    //       console.error('Error checking note:', err);
+    //       return res.status(500).send('Internal Server Error');
+    //     }
 
-        if (results.length > 0) {
-          // Update existing note
-          const updateNoteSql =
-            'UPDATE VehicleNotes SET Note=? WHERE VehicleRO=?';
+    //     if (results.length > 0) {
+    //       // Update existing note
+    //       const updateNoteSql =
+    //         'UPDATE VehicleNotes SET Note=? WHERE VehicleRO=?';
 
-          db.query(
-            updateNoteSql,
-            [Note, vehicleRO],
-            (err, result) => {
-              if (err) {
-                console.error('Error updating note:', err);
-                return res.status(500).send('Internal Server Error');
-              }
+    //       db.query(
+    //         updateNoteSql,
+    //         [Note, vehicleRO],
+    //         (err, result) => {
+    //           if (err) {
+    //             console.error('Error updating note:', err);
+    //             return res.status(500).send('Internal Server Error');
+    //           }
 
-              res.json({
-                message: 'Vehicle and note updated successfully 🚀',
-              });
-            }
-          );
-        } else {
-          // Insert new note
-          const insertNoteSql =
-            'INSERT INTO VehicleNotes (Note, VehicleRO) VALUES (?, ?)';
+    //           res.json({
+    //             message: 'Vehicle and note updated successfully 🚀',
+    //           });
+    //         }
+    //       );
+    //     } else {
+    //       // Insert new note
+    //       const insertNoteSql =
+    //         'INSERT INTO VehicleNotes (Note, VehicleRO) VALUES (?, ?)';
 
-          db.query(
-            insertNoteSql,
-            [Note, vehicleRO],
-            (err, result) => {
-              if (err) {
-                console.error('Error adding note:', err);
-                return res.status(500).send('Internal Server Error');
-              } else {
-                res.json({
-                  message: 'Vehicle and note added successfully 🚀',
-                });
-              }
-            }
-          );
-        }
-      });
+    //       db.query(
+    //         insertNoteSql,
+    //         [Note, vehicleRO],
+    //         (err, result) => {
+    //           if (err) {
+    //             console.error('Error adding note:', err);
+    //             return res.status(500).send('Internal Server Error');
+    //           } else {
+    //             res.json({
+    //               message: 'Vehicle and note added successfully 🚀',
+    //             });
+    //           }
+    //         }
+    //       );
+    //     }
+    //   });
+    // } else {
+    //   res.json({
+    //     message: 'Vehicle updated successfully 🚀',
+    //   });
+    // }
+  }
+});
+
+app.post('/api/notes', (req, res) => {
+  const {note, customerID, vehicleRO } = req.body;
+  const sql = 'INSERT INTO Notes (Note, NoteDate, CustomerID, VehicleRO) VALUES (?, CURDATE(),?,?)';
+  console.log('customerID and vehiclero:', customerID,vehicleRO)
+
+  db.query(sql, [note, customerID, vehicleRO], (err, result) => {
+    if (err) {
+      console.error('Error adding note:', err);
+      res.status(500).send('Internal Server Error');
     } else {
       res.json({
-        message: 'Vehicle updated successfully 🚀',
+        message: 'Note added successfully',
+        noteID: result.insertId
       });
     }
-  }
+  });
+});
+
+app.get('/api/notes', (req, res) => {
+  const { vehicleRO} = req.query;
+  const sql = 'SELECT Note, NoteDate FROM Notes WHERE VehicleRO = ?';
+
+  db.query(sql, [vehicleRO], (err, results) => {
+    if (err) {
+      console.error('Error fetching notes', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.json(results);
+    }
+  });
 });
 
 

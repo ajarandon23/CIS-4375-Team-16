@@ -80,7 +80,7 @@
 
         <div class="form-group">
           <label>Add Note</label>
-          <textarea class="form-control" v-model="record.Note"></textarea>
+          <textarea class="form-control" v-model="newNote"></textarea>
           <button type="button" class="btn btn-secondary mt-2" @click="addNote">
             Add Note
           </button>
@@ -96,7 +96,9 @@
       >
       <h3 class="text-center">Stored Notes</h3>
       <ul>
-        <li v-for="note in storedNotes" :key="note">{{ note }}</li>
+        <li v-for="note in storedNotes" :key="note.NoteID">
+          {{ note.Note }} - {{ formatDate(note.NoteDate) }}
+        </li>
       </ul>
     </div>
   </div>
@@ -119,15 +121,26 @@ export default {
   created() {
     this.fetchRecordDetails();
     this.fetchDepartments();
+    
   },
 
   methods: {
+
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2,'0');
+      const month = (date.getMonth() + 1).toString().padStart(2,'0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    },
+
     async fetchRecordDetails() {
       try {
         const response = await axios.get(
           `http://localhost:3000/api/vehicles/${this.$route.params.id}`
         );
         this.record = response.data;
+        this.fetchNotes();
       } catch (error) {
         console.error('Error fetching record details:', error);
       }
@@ -183,12 +196,39 @@ export default {
         });
     },
 
-    addNote() {
-      if (this.newNote.trim() !== '') {
-        this.storedNotes.push(this.newNote);
+    async addNote() {
+      if (this.newNote.trim() === '') {
+        return;
+      }
+
+      const noteData = {
+        note: this.newNote,
+        customerID: this.record.CustomerID,
+        vehicleRO: this.record.VehicleRO
+      };
+
+      try {
+        await axios.post('http://localhost:3000/api/notes', noteData);
+        this.fetchNotes();
         this.newNote = '';
+      } catch (error) {
+        console.error('Error adding note:', error);
       }
     },
+    async fetchNotes() {
+      if (!this.record.VehicleRO) {
+        console.warn("VehicleRO not set. Cannot fetch notes.");
+        return;
+      }
+      try {
+        const vehicleRO = this.record.VehicleRO;
+        const response = await axios.get(`http://localhost:3000/api/notes?vehicleRO=${vehicleRO}`);
+        this.storedNotes = response.data
+      } catch (error) {
+        console.error('Error fetching notes:', error);
+      }
+    }
+
   },
 };
 </script>
