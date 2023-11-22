@@ -93,3 +93,12 @@ CREATE TABLE VehicleNotes (
    VehicleRO int ,
    FOREIGN KEY (VehicleRO) REFERENCES Vehicles (VehicleRO) 
 );
+CREATE TABLE Notes (
+   NoteID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   Note varchar(200) NOT NULL,
+   NoteDate date NOT NULL,
+   CustomerID int,
+   VehicleRO int,
+   FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID),
+   FOREIGN KEY (VehicleRO) REFERENCES Vehicles (VehicleRO)
+);
