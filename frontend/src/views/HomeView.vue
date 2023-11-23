@@ -1,8 +1,10 @@
 <template>
   <div class="container mt-5">
-    <div class="card">
-      <!-- Top row of boxes with department names and car counts -->
-      <div class="row justify-content-center">
+    <div class="text-center">
+      <h2></h2>
+    </div>
+    <!-- Top row of boxes with department names and car counts -->
+    <div class="row justify-content-center">
         <div class="col-md-2 mb-3" v-for="department in departments" :key="department.DepartmentName">
           <div class="box p-2">
             <h5>{{ department.DepartmentName }}</h5>
@@ -10,20 +12,17 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 
   <!-- Bottom box extending the rest of the page -->
   <div class="container mt-5">
-    <div class="card">
-      <div class="row">
+    <div class="row">
         <div class="col-12">
           <div class="box p-2">
             Bottom Box
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -64,9 +63,21 @@ export default {
 
 <style>
 .box {
-  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  background: linear-gradient(to bottom right, #f9f9f9, #e9e9e9);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
   min-height: 100px;
+  transition: all 0.3s ease;
+}
+.box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card {
