@@ -1,5 +1,10 @@
 <template>
     <div>
+      <!-- Display the title above the buttons -->
+      <div v-if="selectedEmployeeName" class="employee-title">
+        {{ selectedEmployeeName }}'s Workload
+      </div>
+
       <div class="employee-buttons-container">
         <button 
           v-for="employee in employees" 
@@ -28,6 +33,7 @@ export default {
   setup() {
     const pieChartCanvas = ref(null);
     const employees =ref([]);
+    const selectedEmployeeName = ref('');
     const chartData = ref({
       labels: [],
       datasets: [{
@@ -69,9 +75,10 @@ export default {
     const fetchEmployeeData = async (employeeId) => {
       try {
         const response = await axios.get(`http://localhost:3000/api/employee-data/${employeeId}`);
-        // Process and update the chart with this specific employee's data
         updateChartDataForEmployee(response.data);
-        console.log('employee',response.data)
+        if (response.data.length > 0) {
+          selectedEmployeeName.value = response.data[0].FirstName; // Update the selected employee's name
+        }
       } catch (error) {
         console.error(`Error fetching data for employee ${employeeId}:`, error);
       }
@@ -132,7 +139,8 @@ export default {
     employees,
     fetchEmployeeData,
     // Include the chartInstance in the returned object if you need to access it elsewhere
-    chartInstance
+    chartInstance,
+    selectedEmployeeName
     };
   }
 }
@@ -162,5 +170,11 @@ export default {
   border-radius: 4px; /* Optional: Rounds the corners of the buttons */
   background-color: #f5f5f5; /* Optional: Background color */
   cursor: pointer; /* Changes cursor to pointer on hover */
+}
+.employee-title {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>
