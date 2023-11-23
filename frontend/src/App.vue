@@ -77,4 +77,38 @@ a,
     margin: 0 2rem 0 0;
   }
 }
+.navbar {
+  background: linear-gradient(to right, #001eff, #ffffff); /* Blue to white gradient */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+.nav-link {
+  color: #007bff;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-right: 15px;
+  padding: 5px 10px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #0056b3;
+  background-color: rgba(0, 123, 255, 0.2);
+  text-decoration: underline;
+  border-radius: 5px;
+}
+.navbar-brand {
+  /* Example combining multiple styles */
+  font-size: 1.5em;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(13, 13, 13, 0.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-brand:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
 </style>
