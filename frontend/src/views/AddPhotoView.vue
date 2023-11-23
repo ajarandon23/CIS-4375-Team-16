@@ -14,21 +14,21 @@
           style="display: none"
           @change="handleImageCapture('Front')"
         >
-        <button class="btn btn-primary rounded-circle" @click="openImageCapture">Front left</button>
-        <button class="btn btn-primary rounded-circle mx-2" @click="openImageCapture">Front</button>
-        <button class="btn btn-primary rounded-circle" @click="openImageCapture">Front right</button>
+        <button class="circle-button" @click="openImageCapture">FL</button>
+        <button class="circle-button" @click="openImageCapture">Front</button>
+        <button class="circle-button" @click="openImageCapture">FR</button>
       </div>
       
       <!-- Add upload image buttons around the image with circle shapes -->
       <div class="d-flex justify-content-center mt-3">
         <!-- Buttons on the left of the image -->
-        <button class="btn btn-primary rounded-circle mx-2" @click="openImageCapture('Left')">Left side</button>
+        <button class="circle-button side-button" @click="openImageCapture('Left')">Left side</button>
         
         <!-- Image in the center -->
         <img src="../assets/carimage.png" alt="Vehicle Image" class="img-fluid mx-2" style="width: 200px; height: 200px; border-radius: 50%;">
         
         <!-- Buttons on the right of the image -->
-        <button class="btn btn-primary rounded-circle mx-2" @click="openImageCapture('Right')">Right Side</button>
+        <button class="circle-button side-button" @click="openImageCapture('Right')">Right Side</button>
       </div>
       
       <!-- Buttons from the back of the image with circle shapes -->
@@ -41,11 +41,11 @@
           style="display: none"
           @change="handleImageCapture('Rear')"
         >
-        <button class="btn btn-primary rounded-circle" @click="openImageCapture">Rear left</button>
-        <button class="btn btn-primary rounded-circle mx-2" @click="openImageCapture">Rear</button>
+        <button class="circle-button" @click="openImageCapture">RL</button>
+        <button class="circle-button mx-2" @click="openImageCapture">Rear</button>
         
         <!-- Button to upload an image from the device -->
-        <button class="btn btn-primary rounded-circle" @click="openFileUpload('Rear right')">Rear right</button>
+        <button class="circle-button" @click="openFileUpload('Rear right')">RR</button>
       </div>
 
       <!-- Add a notes section -->
@@ -128,3 +128,40 @@ export default {
   }
 }
 </script>
+<style>
+.circle-button {
+  display: inline-block; /* Aligns the button correctly */
+  width: 50px;  /* Diameter of the circle */
+  height: 50px; /* Diameter of the circle */
+  border-radius: 50%; /* Makes the button circular */
+  text-align: center; /* Centers the text/icon inside the button */
+  padding: 0; /* Removes default padding */
+  line-height: 50px; /* Centers the text vertically */
+  font-size: 16px; /* Adjust the font size as needed */
+  margin: 5px; /* Adds some space around the button */
+  border: none; /* Removes border */
+  color: white; /* Text/icon color */
+  background-color: #007bff; /* Background color of the button */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.circle-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Optional: If you want to add specific styles for disabled state */
+.circle-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+.align-center {
+  display: flex; /* Enables flexbox */
+  justify-content: center; /* Horizontally centers the items */
+  align-items: center; /* Vertically centers the items */
+}
+.side-button {
+  margin-top: 50px; /* Adjust this value to center the button with the image */
+}
+
+</style>

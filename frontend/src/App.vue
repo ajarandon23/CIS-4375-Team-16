@@ -17,9 +17,12 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/view">Cars List</router-link>
           </li>
-        
         </ul>
       </div>
+      <div class="wrapper">
+      <button class="btn-primary" @click="logout">Logout</button>
+    </div>
+      
     </nav>
 
  <!-- Router view -->
@@ -28,7 +31,25 @@
     </div>
   </div>
 </template>
+<script>
+import { useRouter } from 'vue-router'
+export default {
+  setup() {
+    const router = useRouter(); // create router instance
 
+    const logout = async () => {
+      try {
+        localStorage.removeItem('isAuthenticated'); // Remove the authentication flag
+        router.push({name: 'Login'});
+      } catch (error) {
+        console.error('Logout failed:', error)
+      }
+    };
+    return {logout};
+  }
+}
+
+</script>
 <style>
 @import "./assets/base.css";
 

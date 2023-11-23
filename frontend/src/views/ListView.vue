@@ -70,7 +70,7 @@ export default {
     },
     fetchRecords() {
       axios.get('http://localhost:3000/api/management').then(response => {
-        console.log(response.data);
+        console.log('response data:',response.data);
         this.records = response.data;
         this.filteredRecords = this.records;
       });
