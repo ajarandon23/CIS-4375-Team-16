@@ -3,34 +3,47 @@
     <div class="text-center">
       <h2></h2>
     </div>
+
     <!-- Top row of boxes with department names and car counts -->
     <div class="row justify-content-center">
-        <div class="col-md-2 mb-3" v-for="department in departments" :key="department.DepartmentName">
-          <div class="box p-2">
-            <h5>{{ department.DepartmentName }}</h5>
-            <p>{{ department.NumberOfCars }} Cars</p>
-          </div>
+      <div v-for="department in departments" :key="department.DepartmentName" class="col-md-2 mb-3">
+        <div class="box p-2">
+          <h5>{{ department.DepartmentName }}</h5>
+          <p>{{ department.NumberOfCars }} Cars</p>
         </div>
       </div>
-  </div>
+    </div>
 
-  <!-- Bottom box extending the rest of the page -->
-  <div class="container mt-5">
-    <div class="row">
-        <div class="col-12">
-          <div class="box p-2">
-            Bottom Box
-          </div>
+    <!-- Bottom box extending the rest of the page -->
+    <div class="row mt-5">
+      <!-- Column for the Chart -->
+      <div class="col-md-6">
+        <div class="box box-1 p-2">
+          
+          <WorkLoadChart/>
         </div>
       </div>
+
+      <!-- Column for other content -->
+      <div class="col-md-6">
+        <div class="box box-2 p-2">
+          box 2
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
+import WorkLoadChart from '../components/workLoadChart.vue'
 
 export default {
   name: 'YourComponentName',
+  components:{
+    WorkLoadChart,
+  },
   data() {
     return {
       departments: []
@@ -82,5 +95,9 @@ export default {
 
 .card {
   padding: 20px;
+}
+.box-1, .box-2 {
+  height: 600px;
+  width: 600px;
 }
 </style>

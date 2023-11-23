@@ -448,6 +448,63 @@ app.get('/api/departments-count', (req, res) => {
   });
 });
 
+app.get('/api/workload-chart', (req, res) => {
+  const sql = `
+    SELECT 
+      e.FirstName,
+      e.LastName,
+      e.EmployeeID,
+      e.JobTitle,
+      COUNT(CASE WHEN ro.RepairSize = 'Small' THEN 1 END) AS SmallJobs,
+      COUNT(CASE WHEN ro.RepairSize = 'Medium' THEN 1 END) AS MediumJobs,
+      COUNT(CASE WHEN ro.RepairSize = 'Large' THEN 1 END) AS LargeJobs,
+      COUNT(CASE WHEN ro.RepairSize = 'X-large' THEN 1 END) AS XLargeJobs
+    FROM Employees e
+    JOIN DepartmentTask dt ON e.FirstName = dt.TaskTechnician
+    JOIN RepairOrder ro ON dt.VehicleRO = ro.VehicleRO
+    WHERE e.JobTitle = 'Body-Technician'
+    GROUP BY e.EmployeeID, e.FirstName, e.LastName, e.JobTitle;
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).send('Error executing the query');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get('/api/employee-data/:employeeId', (req, res) => {
+  const employeeId = req.params.employeeId;
+
+  const sql = `
+    SELECT 
+      e.FirstName,
+      COUNT(CASE WHEN ro.RepairSize = 'Small' THEN 1 END) AS SmallJobs,
+      COUNT(CASE WHEN ro.RepairSize = 'Medium' THEN 1 END) AS MediumJobs,
+      COUNT(CASE WHEN ro.RepairSize = 'Large' THEN 1 END) AS LargeJobs,
+      COUNT(CASE WHEN ro.RepairSize = 'X-large' THEN 1 END) AS XLargeJobs
+    FROM Employees e
+    JOIN DepartmentTask dt ON e.FirstName = dt.TaskTechnician
+    JOIN RepairOrder ro ON dt.VehicleRO = ro.VehicleRO
+    WHERE e.EmployeeID = ?
+    GROUP BY e.FirstName;
+  `;
+
+  db.query(sql, [employeeId], (err, results) => {
+    if (err) {
+      console.error('Error executing the query for employee data:', err);
+      res.status(500).send('Error executing the query');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
+
+
 
 
 
