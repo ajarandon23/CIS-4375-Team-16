@@ -6,6 +6,7 @@
   
   <script>
   import Chart from 'chart.js/auto';
+  import axios from 'axios'; // Import Axios like this
   
   export default {
     data() {
@@ -19,7 +20,7 @@
     methods: {
       async fetchDepartmentDataAndCreateChart() {
         try {
-          const response = await this.$axios.get('http://localhost:3000/api/departments-count');
+          const response = await axios.get('http://localhost:3000/api/departments-count');
           
           this.createDoughnutChart(response.data);
         } catch (error) {
@@ -63,7 +64,13 @@
               },
               title: {
                 display: true,
-                text: 'Cars in Departments'
+                text: 'Vehicles in repair',
+                font: {
+                  size:25,
+                  weight: 'bold',
+                  family: 'Arial, sans-serif'
+                },
+                color: '#333'
               }
             }
           }

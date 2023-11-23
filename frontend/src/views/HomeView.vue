@@ -32,7 +32,7 @@
         </div>
         <div class="col-mdd-6">
         <div class="box box-3 p-2">
-          <!-- <DepartmentDoughnutChart/> -->
+          <DepartmentDoughnutChart/>
 
         </div>
 
@@ -115,10 +115,11 @@ export default {
 }
 .box-2{
   width: 600px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .box-3{
   width: 600px;
-  padding: 20px
+  padding: 20px;
+  
 }
 </style>
