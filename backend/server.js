@@ -422,6 +422,8 @@ app.get('/api/notes', (req, res) => {
       res.json(results);
     }
   });
+});
+
 // Route to get the number of cars in each department
 app.get('/api/departments-count', (req, res) => {
   const sql = `
@@ -431,7 +433,7 @@ app.get('/api/departments-count', (req, res) => {
     FROM Departments d
     LEFT JOIN DepartmentTask dt ON d.DepartmentName = dt.DepartmentName
     LEFT JOIN Vehicles v ON dt.VehicleRO = v.VehicleRO
-    WHERE d.DepartmentName IN ('Body', 'Paint', 'Supplement', 'Detail', 'Delivery')
+    WHERE d.DepartmentName IN ('Body', 'Paint', 'Supplement', 'Detail', 'Delivery', 'Parts')
     GROUP BY d.DepartmentName
     ORDER BY d.DepartmentName;
   `;
@@ -444,10 +446,6 @@ app.get('/api/departments-count', (req, res) => {
       res.json(results);
     }
   });
-});
-
-//
-
 });
 
 

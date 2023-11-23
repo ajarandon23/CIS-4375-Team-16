@@ -41,12 +41,23 @@ export default {
     this.fetchDepartmentData();
   },
   methods: {
-    fetchDepartmentData() {
-      axios.get('http://localhost:3000/api/departments-count').then(response => {
-        console.log('Response data:',response.data);
-        this.departments = response.data;
-      });
-    }
+    async fetchDepartmentData() {
+        try {
+          const response = await axios.get('http://localhost:3000/api/departments-count');
+          const departmentOrder = ['Body', 'Paint', 'Parts', 'Supplement', 'Detail', 'Delivery'];
+
+          // Sort the response data according to the predefined department order
+          const sortedDepartments = response.data.sort((a, b) => {
+            return departmentOrder.indexOf(a.DepartmentName) - departmentOrder.indexOf(b.DepartmentName);
+          });
+
+          console.log('Sorted departments:', sortedDepartments);
+          this.departments = sortedDepartments;
+        } catch (error) {
+          console.error('Error fetching department data:', error);
+        }
+      }
+
   }
 }
 </script>
