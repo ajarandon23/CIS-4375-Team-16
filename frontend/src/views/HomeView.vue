@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="text-center">
-      <h2></h2>
+      <h2>DASHBOARD</h2>
     </div>
 
     <!-- Top row of boxes with department names and car counts -->
@@ -27,9 +27,18 @@
       <!-- Column for other content -->
       <div class="col-md-6">
         <div class="box box-2 p-2">
-          box 2
+          <h3>Need Attention</h3>
+          <StagnantVehiclesTable/>
         </div>
+        <div class="col-mdd-6">
+        <div class="box box-3 p-2">
+          <!-- <DepartmentDoughnutChart/> -->
+
+        </div>
+
       </div>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -38,11 +47,15 @@
 <script>
 import axios from 'axios';
 import WorkLoadChart from '../components/workLoadChart.vue'
+import StagnantVehiclesTable from '../views/stagnantvehiclestable.vue';
+import DepartmentDoughnutChart from '../components/DoughnutChart.vue';
 
 export default {
   name: 'YourComponentName',
   components:{
     WorkLoadChart,
+    StagnantVehiclesTable,
+    DepartmentDoughnutChart,
   },
   data() {
     return {
@@ -96,8 +109,16 @@ export default {
 .card {
   padding: 20px;
 }
-.box-1, .box-2 {
+.box-1{
   height: 600px;
   width: 600px;
+}
+.box-2{
+  width: 600px;
+  margin-bottom: 20px;
+}
+.box-3{
+  width: 600px;
+  padding: 20px
 }
 </style>

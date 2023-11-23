@@ -501,6 +501,33 @@ app.get('/api/employee-data/:employeeId', (req, res) => {
     }
   });
 });
+app.get('/api/stagnant-vehicles', (req, res) => {
+  const query = `SELECT 
+                    v.VehicleRO,
+                    v.Make,
+                    v.Model,
+                    d.DepartmentName,
+                    CONCAT(e.FirstName, ' ', e.LastName) AS Technician,
+                    MAX(dtl.MoveDate) AS LastMoveDate
+                 FROM DepartmentTaskLogs dtl
+                 JOIN Vehicles v ON dtl.VehicleRO = v.VehicleRO
+                 JOIN DepartmentTask dt ON dtl.VehicleRO = dt.VehicleRO
+                 JOIN Departments d ON dt.DepartmentName = d.DepartmentName
+                 JOIN Employees e ON dt.TaskTechnician = e.FirstName
+                 GROUP BY v.VehicleRO, v.Make, v.Model, d.DepartmentName, Technician
+                 HAVING MAX(dtl.MoveDate) <= DATE_SUB(CURDATE(), INTERVAL 5 DAY)`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching stagnant vehicles:', err);
+      res.status(500).send('Error fetching stagnant vehicles data');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
 
 
 
