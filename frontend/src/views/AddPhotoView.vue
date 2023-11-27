@@ -49,33 +49,46 @@
       </div>
 
       <!-- Add a notes section -->
-      <div class="mt-3">
-        <label for="notes">Notes:</label>
-        <textarea id="notes" v-model="photoNotes" class="form-control" rows="4"></textarea>
-      </div>
+      
     </div>
 
     <!-- Additional Photos Area -->
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">Additional Photos</div>
-        <div class="card-body">
-          <!-- Use hidden file input for uploading additional images -->
-          <input
-            ref="additionalInput"
-            type="file"
-            accept="image/*"
-            style="display: none"
-            @change="handleAdditionalUpload"
-          >
-          <button class="btn btn-primary" @click="openAdditionalUpload">Upload Additional</button>
-          <div v-for="(image, index) in uploadedImages" :key="index" class="mt-2">
-            <h5>{{ image.title }}</h5>
-            <img :src="image.src" alt="Uploaded Image" class="img-fluid">
+      <!-- First Box -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header"> Box 1 Title</div>
+            <div class="card-body">
+              <!-- content for box 1 -->
+              <div  class="row">
+                <template v-for="i in 8">
+                  <div class="col-md-3 mb-3">
+                    <div class="thumbnail-box">
+                      <h5 class="thumbnail-title">Photo {{ i }}</h5>
+                      <div class="thumbnail-content">
+                        <!-- Placeholder for future thumbnail photo -->
+                        <img src="path/to/default-image.png" alt="No photo uploaded">
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mt-3">
+          <div class="card">
+            <div class="card-header"> Box 2 Title</div>
+            <div class="card-body">
+              <!-- content for box 2 -->
+            </div>
+
           </div>
         </div>
       </div>
     </div>
+    
 
     <!-- Finish and Submit Button -->
     <div class="text-center mt-4 col-md-12">
@@ -93,38 +106,7 @@ export default {
     }
   },
   methods: {
-    openImageCapture(title) {
-      this.currentTitle = title;
-      this.$el.querySelector('input[type="file"][capture]').click();
-    },
-    handleImageCapture(event) {
-      const file = event.target.files[0];
-      this.uploadImage(file, this.currentTitle);
-    },
-    openAdditionalUpload() {
-      this.$refs.additionalInput.click();
-    },
-    handleAdditionalUpload(event) {
-      const file = event.target.files[0];
-      this.uploadImage(file, 'Additional');
-    },
-    openFileUpload(title) {
-      this.currentTitle = title;
-      this.$refs.additionalInput.click();
-    },
-    uploadImage(file, title) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.uploadedImages.push({ src: reader.result, title: title });
-      };
-      reader.onerror = error => {
-        console.error('Error reading the image', error);
-      };
-    },
-    submit() {
-      this.$router.push('/');  // Redirect to home page
-    }
+    
   }
 }
 </script>
@@ -163,5 +145,21 @@ export default {
 .side-button {
   margin-top: 50px; /* Adjust this value to center the button with the image */
 }
+.thumbnail-box {
+  border: 1px solid #ddd; /* Border for the box */
+  padding: 10px; /* Padding inside the box */
+  text-align: center; /* Center the content */
+  background-color: #f9f9f9; /* Light background color */
+}
+
+.thumbnail-title {
+  margin-bottom: 10px; /* Space between title and image */
+}
+
+.thumbnail-content img {
+  max-width: 100%; /* Ensure the image fits in the box */
+  height: auto; /* Maintain aspect ratio */
+}
+
 
 </style>

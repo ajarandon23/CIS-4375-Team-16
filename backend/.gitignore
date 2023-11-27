@@ -1,1 +1,4 @@
 *node_modules/*
+# .gitignore file
+.env
+node_modules

@@ -1,20 +1,21 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
-
+const cors = require('cors');
 const app = express();
 const port = 3000;
-const cors = require('cors');
+
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
 // MySQL Connection
 const db = mysql.createConnection({
-  host: 'projectteam16database.cryr44bo2odx.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: 'Cougarnet2023',
-  database: 'ProjectTeam16V3',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
 
 db.connect((err) => {
