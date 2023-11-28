@@ -76,6 +76,23 @@ async function fetchImageUrlsFromS3(s3Key) {
 }
 module.exports = fetchImageUrlsFromS3;
 
+async function deleteImageFromS3(s3Key) {
+  const params = {
+    Bucket: 'mybucketimgstorage',
+    Key: s3Key,
+  };
+
+  console.log(`Deleting object from S3 with params:`, params);
+
+  try {
+    await s3.deleteObject(params).promise();
+    console.log(`Successfully deleted ${s3Key} from S3`);
+  } catch (error) {
+    console.error(`Error in deleting file: ${error.message}`);
+    throw error;
+  }
+}
+
 // MySQL Connection
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -94,6 +111,24 @@ db.connect((err) => {
 
 // API Routes
 
+// API for deleting photos
+app.delete('/api/delete-image/:clientID/:vehicleRO/:position/:filename', async (req, res) => {
+  const { clientID, vehicleRO, position, filename } = req.params;
+  const s3Key = `${clientID}/${vehicleRO}/${position}/${filename}`;
+
+  console.log(`Attempting to delete S3 object with key: ${s3Key}`);
+
+  // Logic to delete the image from S3
+  try {
+    await deleteImageFromS3(s3Key); // Implement this function to delete the image
+    res.json({ message: 'Image deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    res.status(500).json({ error: 'Error deleting image' });
+  }
+});
+
+
 // API route for fetching photos
 app.get('/api/fetch-image-urls/:clientID/:vehicleRO/:position', async (req, res) => {
   try {
@@ -107,6 +142,7 @@ app.get('/api/fetch-image-urls/:clientID/:vehicleRO/:position', async (req, res)
     res.status(500).json({ error: 'Error fetching image URLs' });
   }
 });
+
 
 // API route for photo uppload
 app.post('/api/upload', upload.single('file'), async (req, res) => {

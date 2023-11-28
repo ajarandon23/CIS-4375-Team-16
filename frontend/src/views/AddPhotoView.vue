@@ -126,7 +126,10 @@
                       <div class="thumbnail-content">
                         <!-- Placeholder for future thumbnail photo -->
                         <div v-for="image in imageUrls[position]" :key="image.filename">
-                          <img :src="image.imageUrl" :alt="image.filename">
+                          <img :src="image.imageUrl" :alt="image.filename" class="img-thumbnail">
+                          <div class="thumbnail-actions">
+                          <button class="btn btn-danger btn-sm" @click="deleteImage(position, image.filename)">Delete</button>
+                        </div>
                         </div>
                       </div>
                     </div>
@@ -283,6 +286,18 @@ export default {
         this.imageUrls[position] = imageUrlsArray;
       } catch (error) {
         console.error('Error fetching image URLs:', error);
+      }
+    },
+    async deleteImage(position, filename) {
+      try {
+        // Send a request to the backend to delete the image
+        await axios.delete(`http://localhost:3000/api/delete-image/${this.customerID}/${this.vehicleRO}/${position}/${filename}`);
+
+        // Remove the image from the imageUrls array
+        this.imageUrls[position] = this.imageUrls[position].filter(image => image.filename !== filename);
+      } catch (error) {
+        console.error('Error deleting image:', error);
+        // Handle error (e.g., show a message to the user)
       }
     },
   },
