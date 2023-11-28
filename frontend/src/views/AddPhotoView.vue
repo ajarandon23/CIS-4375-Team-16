@@ -135,7 +135,7 @@
                     <h5 class="thumbnail-title"> {{ thumbnailNames[position]}}</h5>
                     <div class="thumbnail-box">
                       
-                      <div class="thumbnail-content">
+                      <div class="thumbnail-content ">
                         <!-- Placeholder for future thumbnail photo -->
                         <div v-for="image in imageUrls[position]" :key="image.filename">
                           <img :src="image.imageUrl" :alt="image.filename" class="img-thumbnail">
@@ -156,12 +156,12 @@
           <div class="card">
             <div class="card-header">Additional Photos</div>
             <div class="card-body">
-              <div class="row">
+              <div class="row additional-thumbnail-container">
                 <template v-if="additionalImages.length" v-for="image in additionalImages" :key="image.filename">
                   <div class="col-md-3 mb-3">
                     <h5 class="thumbnail-title"></h5>
-                    <div class="thumbnail-box">
-                      <div class="thumbnail-content">
+                    <div class="thumbnail-box additional-thumbnail-box">
+                      <div class="thumbnail-content additional-thumbnail-content">
                         <img :src="image.imageUrl" :alt="image.filename" class="img-thumbnail">
                         <div class="thumbnail-actions">
                           <button class="btn btn-danger btn-sm" @click="deleteImage('Additional', image.filename)">Delete</button>
@@ -396,8 +396,8 @@ export default {
   min-height: 400px; /* Set a minimum height for the card body */
   display: flex; /* Use flexbox to center vertically and horizontally */
   flex-direction: column; /* Vertically align content */
-  justify-content: center; /* Horizontally align content */
-  align-items: center; /* Vertically and horizontally center content */
+  justify-content: flex-start; /* Horizontally align content */
+  align-items: flex-start; /* Vertically and horizontally center content */
 }
 
 .thumbnail-box {
@@ -426,6 +426,36 @@ export default {
   max-height: 100px; /* Limit the image height */
   height: auto; /* Maintain aspect ratio */
 }
+/* Style specific to additional photos thumbnails */
+.additional-thumbnail-box {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+  width: 125px; /* Adjust as necessary */
+  height: 125px; /* Adjust as necessary */
+  margin: 5px; /* Add some space around each thumbnail */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Style for the images within the additional thumbnails */
+.additional-thumbnail-content img {
+  max-width: 100%;
+  max-height: 100px;
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 5px; /* Add some space below the image */
+}
+
+/* Adjust the thumbnail container in the Additional Photos section */
+.additional-thumbnail-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow thumbnails to wrap in the container */
+  justify-content: space-around; /* Evenly space out thumbnails */
+  align-items: flex-start; /* Align thumbnails at the top */
+}
+
 
 
 </style>
