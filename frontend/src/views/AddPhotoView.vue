@@ -151,13 +151,30 @@
             </div>
           </div>
         </div>
+        <!-- box 2 -->
         <div class="col-md-12 mt-3">
           <div class="card">
-            <div class="card-header"> Additional Photos</div>
+            <div class="card-header">Additional Photos</div>
             <div class="card-body">
-              <!-- content for box 2 -->
+              <div class="row">
+                <template v-if="additionalImages.length" v-for="image in additionalImages" :key="image.filename">
+                  <div class="col-md-3 mb-3">
+                    <h5 class="thumbnail-title"></h5>
+                    <div class="thumbnail-box">
+                      <div class="thumbnail-content">
+                        <img :src="image.imageUrl" :alt="image.filename" class="img-thumbnail">
+                        <div class="thumbnail-actions">
+                          <button class="btn btn-danger btn-sm" @click="deleteImage('Additional', image.filename)">Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <div v-if="additionalImages.length === 0" class="col-md-12">
+                  <p>No additional photos uploaded.</p>
+                </div>
+              </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -183,6 +200,7 @@ export default {
       photoNotes: '',
       uploadedImages: [],
       imageUrls:[],
+      additionalImages: [],
       vehicleRO: '',
       customerID: '',
       positions: ['FL', 'Front', 'FR', 'Left', 'Right', 'RL', 'Rear', 'RR'],
@@ -215,7 +233,10 @@ export default {
     console.log('CustomerID passed to photo page:', this.customerID)
     this.fetchImageUrls(this.vehicleRO, this.customerID, 'Additional');
     for (const position of this.positions) {
-    this.fetchImageUrls(this.vehicleRO, this.customerID, position);
+      if (position !== 'Additional'){
+        this.fetchImageUrls(this.vehicleRO, this.customerID, position);
+      }
+    
     }
   },
   methods: {
@@ -294,12 +315,13 @@ export default {
     async fetchImageUrls(vehicleRO, clientID, position) {
       try {
         const response = await axios.get(`http://localhost:3000/api/fetch-image-urls/${clientID}/${vehicleRO}/${position}`);
-        
         const imageUrlsArray = response.data;
-        console.log('Fetched image URLs:', imageUrlsArray);
 
-        // Update the imageUrls object for the given position
-        this.imageUrls[position] = imageUrlsArray;
+        if (position === 'Additional') {
+          this.additionalImages = imageUrlsArray; // Store "Additional" images separately
+        } else {
+          this.imageUrls[position] = imageUrlsArray; // Store other position images
+        }
       } catch (error) {
         console.error('Error fetching image URLs:', error);
       }
@@ -309,13 +331,18 @@ export default {
         // Send a request to the backend to delete the image
         await axios.delete(`http://localhost:3000/api/delete-image/${this.customerID}/${this.vehicleRO}/${position}/${filename}`);
 
-        // Remove the image from the imageUrls array
-        this.imageUrls[position] = this.imageUrls[position].filter(image => image.filename !== filename);
+        // Check if the position is 'Additional' and update the additionalImages array
+        if (position === 'Additional') {
+          this.additionalImages = this.additionalImages.filter(image => image.filename !== filename);
+        } else {
+          // Otherwise, update the imageUrls object for the given position
+          this.imageUrls[position] = this.imageUrls[position].filter(image => image.filename !== filename);
+        }
       } catch (error) {
         console.error('Error deleting image:', error);
         // Handle error (e.g., show a message to the user)
       }
-    },
+    }
   },
   
 
