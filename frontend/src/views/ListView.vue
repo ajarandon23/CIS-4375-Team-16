@@ -1,14 +1,14 @@
 <template>
   <div class="row justify-content-center">
     <!-- Dropdown for selecting department -->
-    <div class="mb-3">
+    <div class="mb-3 department-select-container">
       <label for="departmentSelect" class="form-label">Select Department</label>
       <select id="departmentSelect" class="form-select" v-model="selectedDepartment" @change="filterRecords">
         <option value="">All Departments</option>
         <option v-for="department in departments" :key="department" :value="department">{{ department }}</option>
         
       </select>
-      <div class="mb-3">
+      <div class="mb-3 search-box-container">
         <input 
         type="text" 
         class="form-control mb-3" 
@@ -18,8 +18,8 @@
       />
       </div>
     </div>
-
-    <table class="table table-striped">
+    <div class="table-responsive">
+      <table class="table table-striped">
       <!-- Table headers -->
       <thead>
         <tr>
@@ -51,6 +51,8 @@
         </tr>
       </tbody>
     </table>
+
+    </div>
   </div>
 </template>
 
@@ -88,7 +90,7 @@ export default {
     searchRecords() {
       if (this.searchQuery.trim()) {
         this.filteredRecords = this.records.filter(record =>
-          record.VehicleRO.toLowerCase().includes(this.searchQuery.toLowerCase())
+          record.VehicleRO.toString().toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       } else {
         this.filteredRecords = this.records;
@@ -121,5 +123,29 @@ export default {
 <style>
 .bg-success {
   background-color: green; /* Example style for successful status */
+}
+/* Add some bottom margin to the department select for spacing */
+#departmentSelect {
+  margin-bottom: 1rem; /* Change the value as needed */
+}
+
+/* If you want to specifically target the container of the dropdown */
+.department-select-container {
+  margin-bottom: 1rem; /* Space below the department dropdown */
+}
+
+/* Style for the search box container for additional spacing if needed */
+.search-box-container {
+  margin-bottom: 1rem; /* Space below the search box */
+}
+
+/* Add custom styles for the form controls for consistent spacing */
+.form-control {
+  margin-bottom: 0.5rem; /* Space below form elements */
+}
+
+/* Specific styling to add space between table and search box */
+.table-responsive {
+  margin-top: 1rem; /* Space above the table */
 }
 </style>
