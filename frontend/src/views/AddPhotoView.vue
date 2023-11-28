@@ -179,14 +179,14 @@ export default {
         RR: 'Rear Right',
       }, // Object to store static names for each position
       imageUrls: {
-        FL: '/static/images/placeholder_FL.jpg',
-        Front: '/static/images/placeholder_Front.jpg',
-        FR: '/static/images/placeholder_FR.jpg',
-        Left: '/static/images/placeholder_Left.jpg',
-        Right: '/static/images/placeholder_Right.jpg',
-        RL: '/static/images/placeholder_RL.jpg',
-        Rear: '/static/images/placeholder_Rear.jpg',
-        RR: '/static/images/placeholder_RR.jpg',
+        FL: '',
+        Front: '',
+        FR: '',
+        Left: '',
+        Right: '',
+        RL: '',
+        Rear: '',
+        RR: '',
       }, // Object to store image URLs for each position with placeholder
     }
   },
@@ -195,6 +195,9 @@ export default {
     this.customerID = this.$route.params.customerID;
     console.log('VehicleRO passed to add photo page:', this.vehicleRO)
     console.log('CustomerID passed to photo page:', this.customerID)
+    for (const position of this.positions) {
+    this.fetchImageUrls(this.vehicleRO, this.customerID, position);
+    }
   },
   methods: {
     openImageCapture(position) {
@@ -264,6 +267,24 @@ export default {
         } catch (error) {
           console.error('Upload error:', error);
         }
+      }
+    },
+    async fetchImageUrls(vehicleRO, clientID, position) {
+      try {
+        console.log('vehicleRO:', vehicleRO);
+        console.log('clientID:', clientID);
+        console.log('position:', position);
+        const response = await axios.get(`/api/fetch-image-urls/${clientID}/${vehicleRO}/${position}`);
+        
+        // Handle the response data here
+        const imageUrls = response.data;
+        console.log('Fetched image URLs:', imageUrls);
+
+        // Update your component's data with the fetched image URLs
+        // For example, you can set them in a data property:
+        this.imageUrls = imageUrls;
+      } catch (error) {
+        console.error('Error fetching image URLs:', error);
       }
     },
   },
