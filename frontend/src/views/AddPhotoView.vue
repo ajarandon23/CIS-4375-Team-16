@@ -99,6 +99,20 @@
         <button class="circle-button" @click="openImageCapture('RR')">RR</button>
         
       </div>
+      <div class="text-center mt-3">
+        <!-- ... existing buttons ... -->
+
+        <!-- New Button for Additional Photos -->
+        <input
+          ref="fileInputAdditional"
+          type="file"
+          accept="image/*"
+          capture
+          style="display: none"
+          @change="handleImageCapture('Additional')"
+        >
+        <button class="btn btn-primary" @click="openImageCapture('Additional')">Additional Photos</button>
+      </div>
       <div>
         <button type="submit" class="btn btn-primary mt-3">Upload Photos</button>
       </div>
@@ -107,8 +121,6 @@
       <!-- Add a notes section -->
       
     </div>
-
-    <!-- Additional Photos Area -->
     <div class="col-md-6">
       <!-- First Box -->
       <div class="row">
@@ -232,6 +244,9 @@ export default {
           break;
         case 'RR':
           fileinputRef='fileInputRR';
+          break;
+        case 'Additional':
+          fileinputRef='fileInputAdditional';
           break;
         
       }
