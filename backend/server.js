@@ -4,11 +4,45 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 const port = 3000;
+
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
+
+
+// AWS s3 buckets connection
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION // e.g., 'us-west-2'
+});
+
+const s3 = new AWS.S3();
+
+function uploadFileToS3(file, mybucketimgstorage , customerID, vehicleRO, position) {
+  return new Promise((resolve, reject) => {
+    // Setting up S3 upload parameters
+    const params = {
+      Bucket: mybucketimgstorage,
+      Key: `${customerID}/${vehicleRO}/${position}/${file.originalname}`, // File name you want to save as
+      Body: file.buffer
+    };
+
+    // Uploading files to the bucket
+    s3.upload(params, function(err, data) {
+      if (err) {
+        reject(err);
+      }
+      resolve(data);
+    });
+  });
+}
+
 
 // MySQL Connection
 const db = mysql.createConnection({
@@ -27,6 +61,28 @@ db.connect((err) => {
 });
 
 // API Routes
+
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+  const file = req.file;
+  const customerID = req.body.customerID;
+  const vehicleRO = req.body.vehicleRO;
+  const position = req.body.position;
+  console.log('Received file:', file);
+
+  if (!file) {
+    return res.status(400).send('No file uploaded.');
+  }
+
+  try {
+    // Assuming 'mybucketimgstorage' is your S3 bucket name
+    const uploadResult = await uploadFileToS3(file, 'mybucketimgstorage', customerID, vehicleRO, position);
+    res.json({ message: 'File uploaded successfully', data: uploadResult });
+  } catch (error) {
+    console.error('Upload error:', error);
+    res.status(500).send('Error uploading file to S3');
+  }
+});
+
 app.get('/api/customers', (req, res) => {
   // Implement logic to retrieve customers from the database
   db.query('SELECT * FROM Customers', (err, results) => {
@@ -38,6 +94,9 @@ app.get('/api/customers', (req, res) => {
     }
   });
 });
+
+
+
 
 // Fetch all departments
 app.get('/api/departments', (req, res) => {

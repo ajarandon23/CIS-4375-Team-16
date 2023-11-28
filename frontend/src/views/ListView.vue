@@ -36,7 +36,7 @@
           <td>{{ record.LastName }}</td>
           <td>{{ record.Technician }}</td>
           <td>
-            <router-link :to="{ name: 'edit', params: { id: record.VehicleRO } }" class="btn btn-success mx-2">Edit</router-link>
+            <router-link :to="{ name: 'edit', params: { id: record.VehicleRO, customerID: record.CustomerID } }" class="btn btn-success mx-2">Edit</router-link>
             <button @click.prevent="deleteRecord(record.VehicleRO)" class="btn btn-danger mx-2">Delete</button>
           </td>
         </tr>
@@ -70,7 +70,7 @@ export default {
     },
     fetchRecords() {
       axios.get('http://localhost:3000/api/management').then(response => {
-        console.log('response data:',response.data);
+        // console.log('response data:',response.data);
         this.records = response.data;
         this.filteredRecords = this.records;
       });
@@ -91,7 +91,7 @@ export default {
           record => record.DepartmentName === this.selectedDepartment
         );
       }
-      console.log('filtered records:', this.filteredRecords);
+      // console.log('filtered records:', this.filteredRecords);
     },
     
   },

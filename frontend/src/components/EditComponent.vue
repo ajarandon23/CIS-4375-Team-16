@@ -89,11 +89,9 @@
         <!-- <router-link to="/view" class="btn btn-danger mx-2">Update</router-link> -->
       </form>
     </div>
-
+<!-- view photo button  -->
     <div class="col-md-6">
-      <router-link to="/addphoto" class="btn btn-primary mx-2"
-        >View Photos</router-link
-      >
+      <router-link :to="{ name: 'addphoto', params: { id: record.VehicleRO, customerID: record.CustomerID } }" class="btn btn-primary">View Photos</router-link>
       <h3 class="text-center">Stored Notes</h3>
       <ul>
         <li v-for="note in storedNotes" :key="note.NoteID">
@@ -115,7 +113,15 @@ export default {
       storedNotes: [],
       departments: [],
       employees: [],
+      vehicleRO: '',
+      customerID:'',
     };
+  },
+  mounted() {
+    this.vehicleRO = this.$route.params.id;
+    this.customerID= this.$route.params.customerID
+    // console.log('VehicleRO passed to edit page:', this.vehicleRO);
+    // console.log('CustomerID passed to edit page:', this.customerID)
   },
 
   created() {
