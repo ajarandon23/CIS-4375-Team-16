@@ -42,18 +42,35 @@ function uploadFileToS3(file, mybucketimgstorage , customerID, vehicleRO, positi
     });
   });
 }
+async function listFilesInDirectory(bucketName, directory) {
+  const params = {
+    Bucket: bucketName,
+    Prefix: directory,
+  };
+
+  try {
+    const s3Response = await s3.listObjectsV2(params).promise();
+    return s3Response.Contents.map(file => file.Key);
+  } catch (error) {
+    console.error('Error listing files:', error);
+    throw error;
+  }
+}
 async function fetchImageUrlsFromS3(s3Key) {
   try {
-    // Generate a signed URL for the S3 object (valid for a limited time)
-    const signedUrl = s3.getSignedUrl('getObject', {
-      Bucket: 'mybucketimgstorage',
-      Key: s3Key,
-      Expires: 3600, // URL expiration time in seconds
-    });
+    const files = await listFilesInDirectory('mybucketimgstorage', s3Key);
+    const urls = await Promise.all(files.map(file => {
+      const signedUrl = s3.getSignedUrl('getObject', {
+        Bucket: 'mybucketimgstorage',
+        Key: file,
+        Expires: 3600,
+      });
+      return { filename: file.split('/').pop(), imageUrl: signedUrl };
+    }));
 
-    return { imageUrl: signedUrl };
+    return urls;
   } catch (error) {
-    console.error('Error generating signed URL from S3:', error);
+    console.error('Error generating signed URLs:', error);
     throw error;
   }
 }
@@ -80,17 +97,10 @@ db.connect((err) => {
 // API route for fetching photos
 app.get('/api/fetch-image-urls/:clientID/:vehicleRO/:position', async (req, res) => {
   try {
-    // Extract the parameters from the URL
     const { clientID, vehicleRO, position } = req.params;
+    const directory = `${clientID}/${vehicleRO}/${position}/`;
+    const imageUrls = await fetchImageUrlsFromS3(directory);
 
-    // Use the parameters to construct the S3 key
-    const s3Key = `${clientID}/${vehicleRO}/${position}`;
-
-    // Fetch the image URLs from your S3 bucket or wherever they are stored
-    // Replace this with your actual logic to fetch the image URLs
-    const imageUrls = await fetchImageUrlsFromS3(s3Key); // You need to implement this function
-
-    // Respond with the fetched image URLs
     res.json(imageUrls);
   } catch (error) {
     console.error('Error fetching image URLs:', error);

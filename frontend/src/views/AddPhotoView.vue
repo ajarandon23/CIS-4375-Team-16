@@ -125,7 +125,9 @@
                       
                       <div class="thumbnail-content">
                         <!-- Placeholder for future thumbnail photo -->
-                        <img src="imageUrls[position]" alt="No photo uploaded">
+                        <div v-for="image in imageUrls[position]" :key="image.filename">
+                          <img :src="image.imageUrl" :alt="image.filename">
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -272,18 +274,13 @@ export default {
     },
     async fetchImageUrls(vehicleRO, clientID, position) {
       try {
-        console.log('vehicleRO:', vehicleRO);
-        console.log('clientID:', clientID);
-        console.log('position:', position);
         const response = await axios.get(`http://localhost:3000/api/fetch-image-urls/${clientID}/${vehicleRO}/${position}`);
         
-        // Handle the response data here
-        const imageUrls = response.data;
-        console.log('Fetched image URLs:', imageUrls);
+        const imageUrlsArray = response.data;
+        console.log('Fetched image URLs:', imageUrlsArray);
 
-        // Update your component's data with the fetched image URLs
-        // For example, you can set them in a data property:
-        this.imageUrls = imageUrls;
+        // Update the imageUrls object for the given position
+        this.imageUrls[position] = imageUrlsArray;
       } catch (error) {
         console.error('Error fetching image URLs:', error);
       }
