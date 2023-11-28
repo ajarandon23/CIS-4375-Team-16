@@ -44,22 +44,16 @@ function uploadFileToS3(file, mybucketimgstorage , customerID, vehicleRO, positi
 }
 async function fetchImageUrlsFromS3(s3Key) {
   try {
-    // Use the getObject method to fetch the image from S3
-    const s3Response = await s3.getObject({
-      Bucket: 'your-s3-bucket-name',
-      Key: s3Key,
-    }).promise();
-
-    // Generate a signed URL for the fetched image (valid for a limited time)
+    // Generate a signed URL for the S3 object (valid for a limited time)
     const signedUrl = s3.getSignedUrl('getObject', {
-      Bucket: 'your-s3-bucket-name',
+      Bucket: 'mybucketimgstorage',
       Key: s3Key,
-      Expires: 3600, // URL expiration time in seconds (adjust as needed)
+      Expires: 3600, // URL expiration time in seconds
     });
 
     return { imageUrl: signedUrl };
   } catch (error) {
-    console.error('Error fetching image from S3:', error);
+    console.error('Error generating signed URL from S3:', error);
     throw error;
   }
 }

@@ -165,6 +165,7 @@ export default {
     return {
       photoNotes: '',
       uploadedImages: [],
+      imageUrls:[],
       vehicleRO: '',
       customerID: '',
       positions: ['FL', 'Front', 'FR', 'Left', 'Right', 'RL', 'Rear', 'RR'],
@@ -274,7 +275,7 @@ export default {
         console.log('vehicleRO:', vehicleRO);
         console.log('clientID:', clientID);
         console.log('position:', position);
-        const response = await axios.get(`/api/fetch-image-urls/${clientID}/${vehicleRO}/${position}`);
+        const response = await axios.get(`http://localhost:3000/api/fetch-image-urls/${clientID}/${vehicleRO}/${position}`);
         
         // Handle the response data here
         const imageUrls = response.data;
