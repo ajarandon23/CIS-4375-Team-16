@@ -57,9 +57,6 @@
                 console.log("customers data:",response.data);
         });    
         },
-        goToAddVehicle(customerid) {
-          this.$router.push({name: 'addvehicle', params: {CustomerID: customerid}});
-        },
         searchCustomers() {
         if (this.searchQuery) {
             this.customers = this.allCustomers.filter(customer => 
@@ -68,7 +65,10 @@
         } else {
             this.customers = this.allCustomers;
         }
-        }
+        },
+        goToAddVehicle(customerid) {
+          this.$router.push({name: 'addvehicle', params: {CustomerID: customerid}});
+        },
       },
     
   };

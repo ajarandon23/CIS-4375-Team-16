@@ -8,6 +8,15 @@
         <option v-for="department in departments" :key="department" :value="department">{{ department }}</option>
         
       </select>
+      <div class="mb-3">
+        <input 
+        type="text" 
+        class="form-control mb-3" 
+        placeholder="Search by Vehicle RO" 
+        v-model="searchQuery" 
+        @input="searchRecords"
+      />
+      </div>
     </div>
 
     <table class="table table-striped">
@@ -55,6 +64,7 @@ export default {
       departments: [],
       selectedDepartment: '',
       filteredRecords: [],
+      searchQuery:'',
     };
   },
   mounted() {
@@ -70,10 +80,19 @@ export default {
     },
     fetchRecords() {
       axios.get('http://localhost:3000/api/management').then(response => {
-        // console.log('response data:',response.data);
+        console.log('response data:', this.records);
         this.records = response.data;
         this.filteredRecords = this.records;
       });
+    },
+    searchRecords() {
+      if (this.searchQuery.trim()) {
+        this.filteredRecords = this.records.filter(record =>
+          record.VehicleRO.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      } else {
+        this.filteredRecords = this.records;
+      }
     },
     deleteRecord(vehicleRO) {
       // Implement the logic to delete a record
