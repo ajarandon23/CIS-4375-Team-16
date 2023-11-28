@@ -213,9 +213,9 @@ export default {
     this.customerID = this.$route.params.customerID;
     console.log('VehicleRO passed to add photo page:', this.vehicleRO)
     console.log('CustomerID passed to photo page:', this.customerID)
+    this.fetchImageUrls(this.vehicleRO, this.customerID, 'Additional');
     for (const position of this.positions) {
     this.fetchImageUrls(this.vehicleRO, this.customerID, position);
-    this.fetchImageUrls(this.vehicleRO, this.customerID, 'Additional');
     }
   },
   methods: {

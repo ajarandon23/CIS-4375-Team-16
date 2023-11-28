@@ -42,6 +42,7 @@ function uploadFileToS3(file, mybucketimgstorage , customerID, vehicleRO, positi
     });
   });
 }
+// list files in directory
 async function listFilesInDirectory(bucketName, directory) {
   const params = {
     Bucket: bucketName,
@@ -56,6 +57,8 @@ async function listFilesInDirectory(bucketName, directory) {
     throw error;
   }
 }
+
+// fetch image urls
 async function fetchImageUrlsFromS3(s3Key) {
   try {
     const files = await listFilesInDirectory('mybucketimgstorage', s3Key);
@@ -143,6 +146,18 @@ app.get('/api/fetch-image-urls/:clientID/:vehicleRO/:position', async (req, res)
   }
 });
 
+app.get('/api/fetch-additional-image-urls/:clientID/:vehicleRO/:position', async (req, res) => {
+  try {
+    const { clientID, vehicleRO, folder } = req.params;
+    const directory = `${clientID}/${vehicleRO}/${folder}/`;
+    const imageUrls = await fetchImageUrlsFromS3(directory);
+
+    res.json(imageUrls);
+  } catch (error) {
+    console.error('Error fetching image URLs:', error);
+    res.status(500).json({ error: 'Error fetching image URLs' });
+  }
+});
 
 // API route for photo uppload
 app.post('/api/upload', upload.single('file'), async (req, res) => {
@@ -670,17 +685,3 @@ app.get('/api/stagnant-vehicles', (req, res) => {
   });
 });
 
-
-
-
-
-
-
-
-
-function generateVehicleRO() {
-  const randomNum = Math.floor(Math.random() * Math.pow(10, 5))
-    .toString()
-    .padStart(5, '0');
-  return randomNum;
-}
