@@ -215,6 +215,7 @@ export default {
     console.log('CustomerID passed to photo page:', this.customerID)
     for (const position of this.positions) {
     this.fetchImageUrls(this.vehicleRO, this.customerID, position);
+    this.fetchImageUrls(this.vehicleRO, this.customerID, 'Additional');
     }
   },
   methods: {
