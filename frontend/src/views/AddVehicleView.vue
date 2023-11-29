@@ -160,8 +160,8 @@ export default {
   data() {
     return {
       vehicle: {
-        VehicleRO: '2345',
-        LicensePlate: '',
+        VehicleRO: '2233',
+        LicensePlate: 'axd-sss',
         Make: 'Audi',
         Model: 'Audi A3',
         ModelYear: '2022',

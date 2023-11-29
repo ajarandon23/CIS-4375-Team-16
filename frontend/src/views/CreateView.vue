@@ -81,9 +81,9 @@ export default {
   data() {
     return {
       Customer: {
-        FirstName: 'test',
-        LastName: 'last',
-        Email: 'bored@email.com',
+        FirstName: 'Blake',
+        LastName: 'Mann',
+        Email: 'bmann@email.com',
         Phone: '8324554576',
         Address: 'houston',
         Selfpay_Insurance: '', // Set to an initial value
