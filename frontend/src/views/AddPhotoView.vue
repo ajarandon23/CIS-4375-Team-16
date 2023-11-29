@@ -1,4 +1,16 @@
 <template>
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Enlarged Image</h5>
+      </div>
+      <div class="modal-body">
+        <img :src="currentImageUrl" class="img-fluid" alt="Enlarged view">
+      </div>
+    </div>
+  </div>
+</div>
   <div class="row justify-content-center">
     <div class="col-md-6">
       <!-- Add a title for the new view -->
@@ -138,7 +150,7 @@
                       <div class="thumbnail-content ">
                         <!-- Placeholder for future thumbnail photo -->
                         <div v-for="image in imageUrls[position]" :key="image.filename">
-                          <img :src="image.imageUrl" :alt="image.filename" class="img-thumbnail">
+                          <img :src="image.imageUrl" :alt="image.filename"  class="thumbnail-box" @click="showImageModal(image.imageUrl)">
                           <div class="thumbnail-actions">
                           <button class="btn btn-danger btn-sm" @click="deleteImage(position, image.filename)">Delete</button>
                         </div>
@@ -160,7 +172,7 @@
                 <template v-if="additionalImages.length" v-for="image in additionalImages" :key="image.filename">
                   <div class="col-md-3 mb-3">
                     <h5 class="thumbnail-title"></h5>
-                    <div class="thumbnail-box additional-thumbnail-box">
+                    <div class="thumbnail-box additional-thumbnail-box" @click="showImageModal(image.imageUrl)">
                       <div class="thumbnail-content additional-thumbnail-content">
                         <img :src="image.imageUrl" :alt="image.filename" class="img-thumbnail">
                         <div class="thumbnail-actions">
@@ -183,7 +195,7 @@
 
     <!-- Finish and Submit Button -->
     <div class="text-right mt-4 col-md-12">
-      <button class="btn btn-success" @click="submit">Finish and Submit</button>
+      <router-link :to="{ name: 'home'}" class="btn btn-success mx-2">Finish</router-link>
     </div>
   </div>
 </template>
@@ -198,6 +210,7 @@ export default {
   data() {
     return {
       photoNotes: '',
+      currentImageUrl:'',
       uploadedImages: [],
       imageUrls:[],
       additionalImages: [],
@@ -342,7 +355,15 @@ export default {
         console.error('Error deleting image:', error);
         // Handle error (e.g., show a message to the user)
       }
-    }
+    },
+    showImageModal(url) {
+      this.currentImageUrl = url; // Set the current image URL
+      // Trigger the modal to open
+      const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+      modal.show();
+    },
+
+
   },
   
 

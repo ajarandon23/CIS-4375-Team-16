@@ -101,7 +101,7 @@ a,
   /* Example combining multiple styles */
   font-size: 1.5em;
   font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(250, 247, 247, 0.5);
+  text-shadow: 1px 1px 2px rgba(246, 243, 243, 0.5);
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: all 0.3s ease-in-out;
