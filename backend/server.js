@@ -661,19 +661,21 @@ app.get('/api/employee-data/:employeeId', (req, res) => {
 });
 app.get('/api/stagnant-vehicles', (req, res) => {
   const query = `SELECT 
-                    v.VehicleRO,
-                    v.Make,
-                    v.Model,
-                    d.DepartmentName,
-                    CONCAT(e.FirstName, ' ', e.LastName) AS Technician,
-                    MAX(dtl.MoveDate) AS LastMoveDate
-                 FROM DepartmentTaskLogs dtl
-                 JOIN Vehicles v ON dtl.VehicleRO = v.VehicleRO
-                 JOIN DepartmentTask dt ON dtl.VehicleRO = dt.VehicleRO
-                 JOIN Departments d ON dt.DepartmentName = d.DepartmentName
-                 JOIN Employees e ON dt.TaskTechnician = e.FirstName
-                 GROUP BY v.VehicleRO, v.Make, v.Model, d.DepartmentName, Technician
-                 HAVING MAX(dtl.MoveDate) <= DATE_SUB(CURDATE(), INTERVAL 5 DAY)`;
+      v.VehicleRO,
+      v.CustomerID, -- Added to select the CustomerID
+      v.Make,
+      v.Model,
+      d.DepartmentName,
+      CONCAT(e.FirstName, ' ', e.LastName) AS Technician,
+      MAX(dtl.MoveDate) AS LastMoveDate
+    FROM DepartmentTaskLogs dtl
+    JOIN Vehicles v ON dtl.VehicleRO = v.VehicleRO
+    JOIN DepartmentTask dt ON dtl.VehicleRO = dt.VehicleRO
+    JOIN Departments d ON dt.DepartmentName = d.DepartmentName
+    JOIN Employees e ON dt.TaskTechnician = e.FirstName
+    GROUP BY v.VehicleRO, v.CustomerID, v.Make, v.Model, d.DepartmentName, Technician -- Added CustomerID in the GROUP BY clause
+    HAVING MAX(dtl.MoveDate) <= DATE_SUB(CURDATE(), INTERVAL 5 DAY);
+`;
 
   db.query(query, (err, results) => {
     if (err) {
@@ -683,5 +685,11 @@ app.get('/api/stagnant-vehicles', (req, res) => {
       res.json(results);
     }
   });
+});
+app.delete('/api/notes/:noteId', (req, res) => {
+  const noteId = parseInt(req.params.noteId);
+  notes = notes.filter(note => note.NoteID !== noteId);
+
+  res.send({ message: `Note with ID ${noteId} deleted successfully.` });
 });
 

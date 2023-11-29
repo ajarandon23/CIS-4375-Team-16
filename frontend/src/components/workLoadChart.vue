@@ -2,7 +2,7 @@
     <div>
       <!-- Display the title above the buttons -->
       <div v-if="selectedEmployeeName" class="employee-title">
-        {{ selectedEmployeeName }}'s Workload
+        Employee {{ selectedEmployeeName }}'s Workload
       </div>
 
       <div class="employee-buttons-container">

@@ -9,6 +9,7 @@
           <th>Department</th>
           <th>Technician</th>
           <th>Last Move Date</th>
+          <th>Edit</th> <!-- New Column for Details Link -->
         </tr>
         <!-- Table Rows -->
         <tr v-for="vehicle in vehicles" :key="vehicle.VehicleRO">
@@ -18,6 +19,9 @@
           <td>{{ vehicle.DepartmentName }}</td>
           <td>{{ vehicle.Technician }}</td>
           <td>{{ formatDate(vehicle.LastMoveDate) }}</td>
+          <td>
+            <router-link :to="{ name: 'edit', params: { id: vehicle.VehicleRO, customerID: vehicle.CustomerID } }" class="btn btn-success mx-2">Edit</router-link>
+          </td>
         </tr>
       </table>
     </div>

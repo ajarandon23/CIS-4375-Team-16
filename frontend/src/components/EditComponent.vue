@@ -96,6 +96,8 @@
       <ul>
         <li v-for="note in storedNotes" :key="note.NoteID">
           {{ note.Note }} - {{ formatDate(note.NoteDate) }}
+          
+          
         </li>
       </ul>
     </div>
@@ -231,6 +233,14 @@ export default {
         this.storedNotes = response.data
       } catch (error) {
         console.error('Error fetching notes:', error);
+      }
+    },
+    async deleteNote(noteID) {
+      try {
+        await axios.delete(`http://localhost:3000/api/notes/${noteID}`);
+        this.fetchNotes(); // Refresh the notes list
+      } catch (error) {
+        console.error('Error deleting note:', error);
       }
     }
 

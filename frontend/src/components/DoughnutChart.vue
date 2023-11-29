@@ -64,7 +64,7 @@
               },
               title: {
                 display: true,
-                text: 'Vehicles in repair',
+                text: 'Vehicles in Departments',
                 font: {
                   size:25,
                   weight: 'bold',

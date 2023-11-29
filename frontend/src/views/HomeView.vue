@@ -15,31 +15,31 @@
     </div>
 
     <!-- Bottom box extending the rest of the page -->
-    <div class="row mt-5">
+    <div class="row mt-">
       <!-- Column for the Chart -->
-      <div class="col-md-6">
-        <div class="box box-1 p-2">
-          
+      <div class="col-md-6" align="center">
+        <div class="box box- p-2">
           <WorkLoadChart/>
         </div>
       </div>
 
-      <!-- Column for other content -->
+      <!-- Need Attention -->
       <div class="col-md-6">
         <div class="box box-2 p-2">
           <h3>Need Attention</h3>
           <StagnantVehiclesTable/>
         </div>
-        <div class="col-mdd-6">
+      </div>
+    </div>
+    <!-- Department Doughnut Chart -->
+    <div class="row mt-5 justify-content-center">
+      <div class="col-md-12" align="center">
         <div class="box box-3 p-2">
           <DepartmentDoughnutChart/>
-
         </div>
-
       </div>
-      </div>
-      
     </div>
+    
   </div>
 </template>
 
@@ -47,7 +47,7 @@
 <script>
 import axios from 'axios';
 import WorkLoadChart from '../components/workLoadChart.vue'
-import StagnantVehiclesTable from '../views/stagnantvehiclestable.vue';
+import StagnantVehiclesTable from '../views/StagnantVehiclesTable.vue';
 import DepartmentDoughnutChart from '../components/DoughnutChart.vue';
 
 export default {
@@ -114,11 +114,14 @@ export default {
   width: 600px;
 }
 .box-2{
-  width: 600px;
+  width: 675px;
+  height: auto;
   margin-bottom: 30px;
+  overflow: auto;
+  
 }
 .box-3{
-  width: 600px;
+  width: 675px;
   padding: 20px;
   
 }
