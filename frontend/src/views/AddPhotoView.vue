@@ -12,12 +12,14 @@
   </div>
 </div>
   <div class="row justify-content-center">
+    
     <div class="col-md-6">
       <!-- Add a title for the new view -->
       <h3 class="text-center">Add Photo</h3>
       
       <!-- Buttons from the front of the image -->
       <form @submit.prevent="submitPhotos">
+        
         <div class="text-center mt-3">
         <!-- Use hidden file input for image capture -->
         <input
@@ -138,7 +140,9 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header"> Vehicle Photos</div>
+            <div class="card-header"> <div class="col-md-12">
+      <h3>Vehicle Photos R/O: {{ vehicleRO }}</h3>
+    </div></div>
             <div class="card-body">
               <!-- content for box 1 -->
               <div  class="row">
