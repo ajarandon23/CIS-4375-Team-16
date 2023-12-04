@@ -1,8 +1,11 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-4">
+      <div class="col-md-4" align="center">
         <h2>Login</h2>
+        <div class="mb-4">
+          <img src="../assets/DPB-LOGO.jpeg" alt="Placeholder Image" class="img-fluid">
+        </div>
         <form @submit.prevent="handleSubmit">
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
